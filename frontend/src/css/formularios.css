@@ -1,0 +1,25 @@
+.conteiner__titulo{
+    padding: 1em 2em;
+
+    font-size: 2em;
+}
+
+.formulario{
+
+    display: block;
+    justify-content: center;
+    align-items: center;
+
+    padding: 0em 3em;
+}
+
+.formulario__botao{
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 3em 0em;
+}
+
+.formulario-alterar{}

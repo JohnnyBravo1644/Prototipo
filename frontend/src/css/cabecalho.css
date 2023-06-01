@@ -1,0 +1,83 @@
+    .cabecalho{
+        display: flex;
+    }
+
+    .cabecalho__hamburguer{
+        display: flex;
+
+        justify-content: center;
+        align-items: center;
+    }
+
+    .cabecalho__imagem{
+        width: 100px;
+    }
+
+    .cabecalho__Icone-hamburguer{
+        padding: 10%;
+    }
+
+    .sidenav {
+        display: none;
+        height: 100%;
+        width: 100%;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background-color: rgb(51, 135, 51);
+        overflow-x: hidden;
+        padding-top: 50px;
+        border-radius: 10px;
+        font-family: Arial, Helvetica, sans-serif;
+        }
+    
+        .sidenav a {
+        text-align: center;
+        padding: 4% 0%;
+        text-decoration: none;
+        font-size: 25px;
+        color: #000000;
+        display: block;
+        }
+    
+        .sidenav a:hover {
+        color: var(--azul-nav-destaque);
+        }
+    
+        .sidenav .closebtn {
+        position: absolute;
+        top: 0;
+        right: 25px;
+        font-size: 36px;
+        margin-left: 50px;
+        }
+    
+        @media screen and (max-height: 450px) {
+        .sidenav {padding-top: 15px;}
+        .sidenav a {font-size: 18px;}
+        }
+    
+    @media screen and (min-width: 610px){
+        .sidenav {
+            width: 45%;
+            left: unset;
+            right: 0;
+        }
+    
+    }
+    
+    @media screen and (min-width: 1024px){
+    
+        .sidenav {
+            width: 25%;
+            left: unset;
+            right: 0;
+        }
+    
+        .sidenav .closebtn {
+            right: unset;
+            left: 15px;
+        }
+        
+    }

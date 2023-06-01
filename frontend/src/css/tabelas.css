@@ -1,0 +1,27 @@
+.tabela{
+    padding: 0em 5em;;
+}
+
+.tabela__titulo{
+    
+    padding: 1em 2em;
+
+    font-size: 2em;
+}
+.tabela__elementos{}
+
+.carregando{
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    padding: 7em 0em;
+}
+
+.formulario-alterar{
+    border-radius: 1em;
+    background-color: unset;
+    color: aliceblue;
+    border: unset;
+}

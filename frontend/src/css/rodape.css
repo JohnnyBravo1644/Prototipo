@@ -1,0 +1,63 @@
+.rodape{
+    display: block;
+
+    justify-content: center;
+    align-items: center;
+}
+
+.rodape__contato-titulo{
+    text-align: center;
+
+    font-size: 25px;
+}
+
+.rodape__contato-lista{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.rodape__contato-lista-item{
+    max-width: 350px;
+
+    box-sizing: border-box;
+
+    background-repeat: no-repeat;
+    background-position: top 5.1rem left 1.5rem;
+
+    padding: 3em 0em 0em 5em;
+
+    font-weight: 700;
+}
+
+.rodape__contato-lista-instagram{
+    background-image: url(../img/);
+}
+
+.rodape__contato-lista-linkedin{
+    background-image: url(../img/);
+}
+
+.rodape__contato-lista-facebook{
+    background-image: url(../img/);
+}
+
+.rodape__contato-fale-conosco{
+    text-align: center;
+
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.rodape__contato-descricao{
+    padding: 1em;
+
+    font-size: 18px;
+}
+
+.rodape__contato-telefone{
+    text-align: center;
+
+    font-size: 16px;
+    font-weight: 400;
+}
