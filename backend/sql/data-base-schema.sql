@@ -7,12 +7,12 @@ CREATE TABLE professores (
     CONSTRAINT professores_unique_key UNIQUE (id, email)
 );
 
--- Cria a tabela "disciplinas"
 CREATE TABLE disciplinas (
     id SERIAL PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     professor_id INT,
     professor_email VARCHAR(100),
+    dia_semana VARCHAR(20),
     periodo VARCHAR(20) NOT NULL,
     FOREIGN KEY (professor_id, professor_email) REFERENCES professores (id, email)
 );
