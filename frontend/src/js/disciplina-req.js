@@ -1,3 +1,7 @@
+var select = document.getElementById("nome-do-professor");
+var professorContainer = document.getElementById("selecionar-professor");
+var emailInput = document.getElementById("disciplina-email");
+
 const selecionarProfessorDisciplina = () => {
     fetch('http://localhost:3002/professores')
         .then((response) => {
@@ -7,16 +11,32 @@ const selecionarProfessorDisciplina = () => {
             return response.json();
         })
         .then((data) => {
-
             const rows = Array.isArray(data) ? data : [];
-            
             const dados = data.rows;
 
-            document.getElementById('selecionar-professor').innerHTML = dados.reverse().reduce((acumulador, professor) => {
-                return acumulador + ` <option>${professor.nome}</option> `;
-            }, '');
+            dados.forEach(function(professor) {
+                var option = document.createElement("option");
+                option.textContent = professor.nome;
+                select.appendChild(option);
+            });
+
+            select.addEventListener("change", function() {
+                var selectedProfessor = select.value;
+                var selectedProfessorData = dados.find(function(professor) {
+                    return professor.nome === selectedProfessor;
+                });
+
+                if (selectedProfessorData) {
+                    emailInput.value = selectedProfessorData.email;
+                } else {
+                    emailInput.value = "";
+                }
+            });
         })
         .catch((error) => {
             console.error(error);
         });
-}
+};
+
+selecionarProfessorDisciplina();
+
