@@ -12,11 +12,24 @@ const pool = require('./database');
   
   //Professores
   
-  app.get('/professores', (request, response) => {
+  /*app.get('/professores', (request, response) => {
     pool.query(`SELECT * FROM professores`, (err, rows, fields) => {
       return response.status(200).send(rows);
     });
+  });*/
+
+  app.get('/professores', (request, response) => {
+    pool.query(`SELECT * FROM professores`, (err, rows, fields) => {
+      if (err) {
+        // Trate o erro, se houver
+        console.error(err);
+        return response.status(500).send('Erro ao obter os dados dos professores');
+      }
+      
+      return response.status(200).json(rows);
+    });
   });
+  
   
   app.get('/professores/:id', (request, response) => {
     const id = request.params.id;
