@@ -10,21 +10,20 @@
     <link rel="stylesheet" href="../css/rodape.css">
 
     <script src="../js/funcoes.js"></script>
-    <script src="../js/disciplina-req.js"></script>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
-
+    
     <title>Adicionar-Disciplina</title>
 </head>
 <body>
 
     <header class="cabecalho">
-
+        
         <span onclick="openNav()" class="cabecalho__hamburguer"><p><img class="cabecalho__Icone-hamburguer" src="../img/hamburger-md-svgrepo-com.svg" alt="Icone de hamburguer" width="50em"></p></span>
         <img class="cabecalho__imagem" src="../img/logo-Unibave.png" alt="logo-unibave" width="130px">
-
+        
         <div id="mySidenav" class="sidenav">
             <ul class="cabecalho__lista">
                 <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
@@ -33,16 +32,15 @@
                 <li><a title="Projetos" href="discplinas.html" onclick="closeNav()">Lista de Disciplinas</a></li>
             </ul>
         </div>
-
+        
     </header>
 
     <main>
-
+        
         <h1 class="conteiner__titulo">Cadastro de Disciplina</h1>
         
         <section class="cadastrar-disciplina">
             
-            <div id="selecionar-professor"></div>
             
             <form class="formulario" action="">
                 
@@ -51,9 +49,11 @@
                     <input class="formulario__input form-control" type="text" class="form_control" id="nome-da-disciplina">
                 </div>
                 
+                
                 <div class="mb-3">
                     <label for="nome do professor" class="formulario__label form-label">Nome do Professor</label>
                     <select type="text" class="formulario__input form-select" id="nome-do-professor">
+                        <div id="selecionar-professor"></div>
                         <option>Nenhum</option>
                     </select>
                 </div>
@@ -63,7 +63,7 @@
                     <label for="disabledSelect" class="formulario__label form-label">e-mail do Professor</label>
                     <input class="formulario__input form-control" type="email" class="form_control" id="disciplina-email">
                 </div>
-
+                
                 <div class="mb-3">
                     <label for="disabledSelect" class="formulario__label form-label">Dia da semana</label>
                     <select id="disabledSelect" type="text" class="formulario__input form-select" id="disciplina-dia-semana">
@@ -74,7 +74,7 @@
                         <option>Sexta Feira</option>
                     </select>
                 </div>
-
+                
                 <div class="mb-3">
                     <label for="disabledSelect" class="formulario__label form-label">Periodo</label>
                     <select id="disabledSelect" type="text" class="formulario__input form-select" id="disciplina-periodo">
@@ -86,36 +86,38 @@
                 <div class="formulario__botao">
                     <button onclick="inserirDiscplina()" class="btn btn-outline-success">Finalizar Cadastro</button>
                 </div>
-
+                
                 </form>
 
         </section>
     
     </main>
-
+    
     <footer class="rodape">
         <h2 class="rodape__contato-titulo">Contato</h2>
-
+        
         <div class="rodape__contato-redes-sociais">
             <ul class="rodape__contato-lista">
             
                 <li class="rodape__contato-lista-item rodape__contato-lista-instagram"><a title="Ir para o perfil do Instagram" href="https://www.instagram.com/unibave/" target="_blank">Instagram</a></li>
                 <li class="rodape__contato-lista-item rodape__contato-lista-linkedin"><a title="Ir para o perfil do Linkedin" href="https://www.linkedin.com/school/unibave/" target="_blank">Linkedin</a></li>
                 <li class="rodape__contato-lista-item rodape__contato-lista-facebook"><a title="Ir para o perfil do Facebook" href="https://www.facebook.com/unibave" target="_blank">Facebook</a></li>
-            
+                
             </ul>
         </div>
-
+        
         <section class="rodape__contato-fale-conosco">
     
             <p class="rodape__contato-descricao">Fale conosco.</p>
-
+            
             <p>
                 <br><a title="telefone" href="tel:+5548346656003" class="rodape__contato-telefone">(48) 98871-3783</a></br>
             </p>
-
+            
         </section>
     </footer>
+
+    <script src="../js/disciplina-req.js"></script>
     
 </body>
 </html>
