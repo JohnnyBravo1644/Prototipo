@@ -1,4 +1,4 @@
-const selecionarProfessor = () => {
+const selecionarProfessorDisciplina = () => {
     fetch('http://localhost:3002/professores')
         .then((response) => {
             if (!response.ok) {
@@ -7,7 +7,7 @@ const selecionarProfessor = () => {
             return response.json();
         })
         .then((data) => {
-            
+
             const rows = Array.isArray(data) ? data : [];
             
             const dados = data.rows;
