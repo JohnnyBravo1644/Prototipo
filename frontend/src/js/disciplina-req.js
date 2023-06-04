@@ -14,20 +14,20 @@ const selecionarProfessorDisciplina = () => {
             const rows = Array.isArray(data) ? data : [];
             const dados = data.rows;
 
-            dados.forEach(function(professor) {
+            dados.forEach(function (professor) {
                 var option = document.createElement("option");
                 option.textContent = professor.nome;
                 select.appendChild(option);
             });
 
-            select.addEventListener("change", function() {
-                var selectedProfessor = select.value;
-                var selectedProfessorData = dados.find(function(professor) {
-                    return professor.nome === selectedProfessor;
+            select.addEventListener("change", function () {
+                var professorSelecionado = select.value;
+                var professorSelecionadoData = dados.find(function (professor) {
+                    return professor.nome === professorSelecionado;
                 });
 
-                if (selectedProfessorData) {
-                    emailInput.value = selectedProfessorData.email;
+                if (professorSelecionadoData) {
+                    emailInput.value = professorSelecionadoData.email;
                 } else {
                     emailInput.value = "";
                 }
