@@ -9,15 +9,11 @@
     <link rel="stylesheet" href="../css/tabelas.css">
     <link rel="stylesheet" href="../css/rodape.css">
 
-    <script src="js/funcoes.js"></script>
-    <script src="js/lista-de-professores.js"></script>
-    <script src="js/userController.js"></script>
-    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
 
     <script src="js/funcoes.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
-
+    
     <title>lista-de-Professor</title>
 </head>
 <body>
@@ -35,13 +31,13 @@
                 <li><a title="Projetos" href="discplinas.html" onclick="closeNav()">Lista de Disciplinas</a></li>
             </ul>
         </div>
-
+        
     </header>
 
     <main>
         
         <section class="tabela">
-
+            
             <h1 class="tabela__titulo">Lista de Professores</h1>
 
             <table class="tabela__dados table table-dark table-striped-columns">
@@ -52,11 +48,11 @@
                         <th scope="col">email</th>
                     </tr>
                 </thead>
-
+                
                 <tbody id="professores"></tbody>
-
+                
             </table>
-
+            
             <div class="carregando">
                 <img src="img/banner-loading.gif" id="loading" width="60em">
             </div>
@@ -77,17 +73,21 @@
             
             </ul>
         </div>
-
+        
         <section class="rodape__contato-fale-conosco">
     
             <p class="rodape__contato-descricao">Fale conosco.</p>
-
+            
             <p>
                 <br><a title="telefone" href="tel:+5548346656003" class="rodape__contato-telefone">(48) 98871-3783</a></br>
             </p>
-
+            
         </section>
     </footer>  
+
+    <script src="js/funcoes.js"></script>
+    <script src="js/lista-de-professores.js"></script>
+    <script src="js/userController.js"></script>
     
 </body>
 </html>
