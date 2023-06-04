@@ -11,12 +11,6 @@ const pool = require('./database');
   });
   
   //Professores
-  
-  /*app.get('/professores', (request, response) => {
-    pool.query(`SELECT * FROM professores`, (err, rows, fields) => {
-      return response.status(200).send(rows);
-    });
-  });*/
 
   app.get('/professores', (request, response) => {
     pool.query(`SELECT * FROM professores`, (err, rows, fields) => {
@@ -127,21 +121,41 @@ const pool = require('./database');
   });
 
   app.post('/disciplina/inserir', (request, response) => {
-    const { nomeDisciplina, professorId, emailProfessor, periodo } = request.body;
-    
-    if (!nomeDisciplina || !professorId || !emailProfessor || !periodo) {
-      return response.status(400).send('Campos obrigatórios não foram fornecidos');
+    const { nomeDisciplina, professorId, emailProfessor, diaSemana, periodo } = request.body;
+
+    if (!nomeDisciplina || !professorId || !emailProfessor || !diaSemana || !periodo) {
+        return response.status(400).send('Campos obrigatórios não foram fornecidos');
     }
-    
-    pool.query('INSERT INTO disciplinas (nome, professor_id, professor_email, periodo) VALUES ($1, $2, $3, $4)', [nomeDisciplina, professorId, emailProfessor, periodo], (err, result) => {
-      if (err) {
-        console.error(err);
-        return response.status(500).send('Erro no servidor');
-      }
-      
-      response.status(201).send('Disciplina cadastrada com sucesso');
-    });
-  });
+
+    pool.query(
+        'SELECT * FROM disciplinas WHERE professor_id = $1 AND dia_semana = $2',
+        [professorId, diaSemana],
+        (err, result) => {
+            if (err) {
+                console.error(err);
+                return response.status(500).send('Erro no servidor');
+            }
+
+            if (result.rows.length > 0) {
+                return response.status(400).send('Professor está indisponível neste dia');
+            }
+
+            pool.query(
+                'INSERT INTO disciplinas (nome, professor_id, professor_email, dia_semana, periodo) VALUES ($1, $2, $3, $4, $5)',
+                [nomeDisciplina, professorId, emailProfessor, diaSemana, periodo],
+                (err, result) => {
+                    if (err) {
+                        console.error(err);
+                        return response.status(500).send('Erro no servidor');
+                    }
+
+                    response.status(201).send('Disciplina cadastrada com sucesso');
+                }
+            );
+        }
+    );
+});
+
 
   app.put('/disciplina/alterar/:id', (request, response) => {
     const id = request.params.id;
