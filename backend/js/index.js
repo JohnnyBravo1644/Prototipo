@@ -34,7 +34,7 @@ const pool = require('./database');
         return response.status(500).send('Erro no servidor');
       }
   
-      const professor = result.rows[0]; // Acessa o primeiro resultado retornado
+      const professor = result.rows[0];
   
       if (!professor) {
         return response.status(404).send('Professor não encontrado');

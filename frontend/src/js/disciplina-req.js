@@ -39,4 +39,3 @@ const selecionarProfessorDisciplina = () => {
 };
 
 selecionarProfessorDisciplina();
-
