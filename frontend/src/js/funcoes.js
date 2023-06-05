@@ -12,6 +12,12 @@ function esconderIconeCarregando() {
       document.getElementById("mySidenav").style.display = "block";
     };
     
-    function closeNav() {
-      document.getElementById("mySidenav").style.display = "none";
-    };
+  function closeNav() {
+    document.getElementById("mySidenav").style.display = "none";
+  };
+
+  const limparCampos = () => {
+    document.getElementById('nome').value = '';
+    document.getElementById('formacao').value = '';
+    document.getElementById('email').email = '';
+  }
