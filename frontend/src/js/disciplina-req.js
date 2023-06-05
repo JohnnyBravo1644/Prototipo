@@ -17,13 +17,16 @@ const selecionarProfessorDisciplina = () => {
             dados.forEach(function (professor) {
                 var option = document.createElement("option");
                 option.textContent = professor.nome;
+                option.value = professor.id;
                 select.appendChild(option);
             });
 
             select.addEventListener("change", function () {
                 var professorSelecionado = select.value;
                 var professorSelecionadoData = dados.find(function (professor) {
-                    return professor.nome === professorSelecionado;
+                    if(professor.id == professorSelecionado){
+                        return professor;
+                    }
                 });
 
                 if (professorSelecionadoData) {
