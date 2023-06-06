@@ -28,6 +28,4 @@ const carregarProfesores = () => {
             console.error(error);
         });
 };
-
-
 carregarProfesores()
