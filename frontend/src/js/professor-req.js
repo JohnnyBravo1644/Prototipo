@@ -22,6 +22,7 @@ const carregarProfesores = () => {
             </tr>
                 `;
             }, '');
+            esconderIconeCarregando()
         })
         .catch((error) => {
             console.error(error);
