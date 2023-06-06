@@ -137,7 +137,7 @@ app.post('/disciplina/inserir', (request, response) => {
       }
 
       if (result.rows.length > 0) {
-        return response.status(400).send('Professor está indisponível neste dia');
+        return response.status(200).json({ massage: 'Professor está indisponível neste dia' });
       }
 
       pool.query(
