@@ -137,7 +137,7 @@ app.get('/disciplina/:id', (request, response) => {
 app.post('/disciplina/inserir', (request, response) => {
   const { nomeDisciplina, professorId, diaSemana, periodo } = request.body;
 
-  if (!nomeDisciplina || !professorId || !emailProfessor || !diaSemana || !periodo) {
+  if (!nomeDisciplina || !professorId || !diaSemana || !periodo) {
     return response.status(400).send('Campos obrigatórios não foram fornecidos');
   }
 
@@ -155,7 +155,7 @@ app.post('/disciplina/inserir', (request, response) => {
       }
 
       pool.query(
-        'INSERT INTO disciplinas (nome, professor_id, professor_email, dia_semana, periodo) VALUES ($1, $2, $3, $4)',
+        'INSERT INTO disciplinas (nome, professor_id, dia_semana, periodo) VALUES ($1, $2, $3, $4)',
         [nomeDisciplina, professorId, diaSemana, periodo],
         (err, result) => {
           if (err) {

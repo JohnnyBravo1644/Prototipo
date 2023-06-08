@@ -1,7 +1,6 @@
 const inserirDiscplina = (disciplina = {}) => {
     const nomeDaDisciplina = document.getElementById('nome-da-disciplina').value;
     const professorId = document.getElementById('nome-do-professor').value;
-    const email = document.getElementById('disciplina-email').value;
     const diaSemana = document.getElementById('disciplina-dia-semana').value;
     const periodo = document.getElementById('disciplina-periodo').value;
 
@@ -11,7 +10,7 @@ const inserirDiscplina = (disciplina = {}) => {
                 'Content-Type': 'application/json'
             },
 
-        body: JSON.stringify({nomeDisciplina: nomeDaDisciplina, professorId: professorId, emailProfessor: email, diaSemana: diaSemana, periodo: periodo})
+        body: JSON.stringify({nomeDisciplina: nomeDaDisciplina, professorId: professorId, diaSemana: diaSemana, periodo: periodo})
 
     }).then(async (resposta) => {
         mostrarMensagem(await resposta.json());

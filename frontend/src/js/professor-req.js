@@ -11,7 +11,7 @@ const carregarProfesores = () => {
             const dados = data.rows;
 
             document.getElementById('professores').innerHTML = dados.reverse().reduce((acumulador, professor) => {
-                console.log('Professor', professor)
+
                 return acumulador + `
                 <tr>
                 <th "col-sm-3""><input class="formulario-alterar" type="text" id="professor-nome-${professor.id}"  value="${professor.nome}"></th>
@@ -29,3 +29,28 @@ const carregarProfesores = () => {
         });
 };
 carregarProfesores()
+
+const alterarProfessor = (id) => {
+    const nome = document.getElementById(`professor-nome-${id}`).value;
+    const formacao = document.getElementById(`professor-formacao-${id}`).value;
+    const email = document.getElementById(`professor-email-${id}`).value;
+    fetch(`http://localhost:3002/professor/alterar/${id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({nomeProfessor: nome, formacaoProfessor: formacao, emailProfessor: email})
+    }).then(async(resposta) => {
+        mostrarMensagem(await resposta.json());
+        carregarProfesores();
+    })
+}
+
+const excluirProfessor = (id) => {
+    fetch (`http://localhost:3002/professor/deletar/${id}`,{
+        method: 'DELETE',
+    }).then(async (resposta) => {
+        mostrarMensagem(await resposta.json());
+        carregarProfesores();
+    })
+};

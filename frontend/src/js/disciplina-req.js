@@ -11,16 +11,16 @@ const carregarDisciplinas = () => {
             return response.json();
         })
         .then((data) => {
-            const rows = Array.isArray(data) ? data : [];
             const dados = data.rows;
+            console.log(data)
 
-            document.getElementById('disciplinas').innerHTML = dados.reverse().reduce((acumulador, disciplina) => {
+            document.getElementById('disciplinas').innerHTML = data.reverse().reduce((acumulador, disciplina) => {
                 console.log('Discplina', disciplina)
                 return acumulador + `
                 <tr>
                 <th "col-sm-3"><input class="formulario-alterar" type="text" id="disciplina-nome-${disciplina.id}" value="${disciplina.nome}"></th>
-                <th "col-sm-3"><input class="formulario-alterar" type="text" id="disciplina-professor-${disciplina.id}" value="${disciplina.nome}"></th>
-                <th class="col-sm-9"><input class="formulario-alterar" type="text" id="disciplina-email-${disciplina.id}" value="${disciplina.professor_email}"></th>
+                <th "col-sm-3"><input class="formulario-alterar" type="text" id="disciplina-professor-${disciplina.id}" value="${disciplina.professor.nome}"></th>
+                <th class="col-sm-9"><input class="formulario-alterar" type="text" id="disciplina-email-${disciplina.id}" value="${disciplina.professor.email}"></th>
                 <th class="col-sm-9"><input class="formulario-alterar" type="text" id="disciplina-dia-semana-${disciplina.id}" value="${disciplina.dia_semana}"></th>
                 <th class="col-sm-9"><input class="formulario-alterar" type="text" id="disciplina-periodo-${disciplina.id}" value="${disciplina.periodo}"></th>
                 <th class="col-sm-9"><button onclick="excluirDiscplina(${disciplina.id})" id="deletar" class="btn btn-success">Deletar</button></th>
@@ -63,12 +63,6 @@ const selecionarProfessorDisciplina = () => {
                         return professor;
                     }
                 });
-
-                if (professorSelecionadoData) {
-                    emailInput.value = professorSelecionadoData.email;
-                } else {
-                    emailInput.value = "";
-                }
             });
         })
         .catch((error) => {
