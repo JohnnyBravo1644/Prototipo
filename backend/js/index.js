@@ -78,26 +78,40 @@ app.put('/professor/alterar/:id', (request, response) => {
   });
 });
 
-app.delete('/professor/deletar/:id', (request, response) => {
-  const id = request.params.id;
-  if (!id) {
-    return response.status(400).send('Dados invalidos!');
-  }
-  pool.query(`DELETE FROM professores WHERE id = ${id}`, (err, result) => {
-    if (err) {
-      console.error('Erro ao executar a consulta:', err);
-      return response.status(500).send('Erro no servidor');
-    }
-
-    return response.status(200).send("Professor deletado com sucesso");
-  });
-});
-
 //Disciplinas
 
+async function getProfessorById(id) {
+  return new Promise((resolve, reject) => {
+    pool.query('SELECT * FROM professores WHERE id = $1', [id], (err, result) => {
+      if (err) {
+        console.error('Erro ao executar a consulta:', err);
+        return response.status(500).send('Erro no servidor');
+      }
+  
+      const professor = result.rows[0];
+  
+      if (!professor) {
+        return response.status(404).send('Professor não encontrado');
+      }
+  
+      resolve(professor);
+    }) 
+  });
+}
+
 app.get('/disciplinas', (request, response) => {
-  pool.query(`SELECT * FROM disciplinas`, (err, rows, fields) => {
-    return response.status(200).send(rows);
+  pool.query(`SELECT * FROM disciplinas`, async (err, result, fields) => {
+    const disciplinas = await Promise.all(
+      result.rows.map(async (row) => {
+        return new Promise(async (resolve) => {
+          resolve({
+            ...row, 
+            professor : await getProfessorById(row.professor_id)
+          })
+        }) 
+      })
+    )
+    return response.status(200).send(disciplinas);
   });
 });
 
@@ -110,18 +124,18 @@ app.get('/disciplina/:id', (request, response) => {
       return response.status(500).send('Erro no servidor');
     }
 
-    const professor = result.rows[0];
+    const disciplina = result.rows[0];
 
-    if (!professor) {
+    if (!disciplina) {
       return response.status(404).send('Disciplina não encontrada');
     }
 
-    return response.status(200).send(professor);
+    return response.status(200).send(disciplina);
   });
 });
 
 app.post('/disciplina/inserir', (request, response) => {
-  const { nomeDisciplina, professorId, emailProfessor, diaSemana, periodo } = request.body;
+  const { nomeDisciplina, professorId, diaSemana, periodo } = request.body;
 
   if (!nomeDisciplina || !professorId || !emailProfessor || !diaSemana || !periodo) {
     return response.status(400).send('Campos obrigatórios não foram fornecidos');
@@ -141,8 +155,8 @@ app.post('/disciplina/inserir', (request, response) => {
       }
 
       pool.query(
-        'INSERT INTO disciplinas (nome, professor_id, professor_email, dia_semana, periodo) VALUES ($1, $2, $3, $4, $5)',
-        [nomeDisciplina, professorId, emailProfessor, diaSemana, periodo],
+        'INSERT INTO disciplinas (nome, professor_id, professor_email, dia_semana, periodo) VALUES ($1, $2, $3, $4)',
+        [nomeDisciplina, professorId, diaSemana, periodo],
         (err, result) => {
           if (err) {
             console.error(err);
@@ -161,7 +175,7 @@ app.put('/disciplina/alterar/:id', (request, response) => {
   if (!id) {
     return response.status(400).send('Dados inválidos!');
   }
-  const { nomeDisciplina, professorId, emailProfessor, diaSemana, periodo } = request.body;
+  const { nomeDisciplina, professorId, diaSemana, periodo } = request.body;
 
   pool.query(
     'SELECT * FROM disciplinas WHERE professor_id = $1 AND dia_semana = $2 AND id <> $3',
@@ -177,7 +191,7 @@ app.put('/disciplina/alterar/:id', (request, response) => {
       }
 
       pool.query(
-        `UPDATE disciplinas SET nome='${nomeDisciplina}', professor_id='${professorId}', professor_email='${emailProfessor}', dia_semana='${diaSemana}', periodo='${periodo}' WHERE id='${id}';`,
+        `UPDATE disciplinas SET nome='${nomeDisciplina}', professor_id='${professorId}', dia_semana='${diaSemana}', periodo='${periodo}' WHERE id='${id}';`,
         (err, result) => {
           if (err) {
             console.error(err);
