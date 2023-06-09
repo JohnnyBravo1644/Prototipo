@@ -99,6 +99,25 @@ async function getProfessorById(id) {
   });
 }
 
+async function getSalaById(id) {
+  return new Promise((resolve, reject) => {
+    pool.query('SELECT * FROM salas WHERE id = $1', [id], (err, result) => {
+      if (err) {
+        console.error('Erro ao executar a consulta:', err);
+        return response.status(500).send('Erro no servidor');
+      }
+  
+      const sala = result.rows[0];
+
+      
+      if (!sala) {
+        return response.status(404).send('Sala não encontrado');
+      }
+      resolve(sala);
+    }) 
+  });
+}
+
 app.get('/disciplinas', (request, response) => {
   pool.query(`SELECT * FROM disciplinas`, async (err, result, fields) => {
     const disciplinas = await Promise.all(
@@ -106,10 +125,11 @@ app.get('/disciplinas', (request, response) => {
         return new Promise(async (resolve) => {
           resolve({
             ...row, 
-            professor : await getProfessorById(row.professor_id)
+            professor : await getProfessorById(row.professor_id),
+            sala : await getSalaById(row.sala_id)
           })
         }) 
-      })
+      }),
     )
     return response.status(200).send(disciplinas);
   });

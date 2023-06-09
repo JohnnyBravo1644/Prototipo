@@ -44,6 +44,7 @@ const carregarDisciplinas = () => {
                 <th "col-sm-3"><input class="formulario-alterar" type="text" id="disciplina-nome-${disciplina.id}" value="${disciplina.nome}"></th>
                 <th class="col-sm-9">${disciplina.professor.nome}</th>
                 <th class="col-sm-9">${disciplina.professor.email}</th>
+                <th class="col-sm-9"><input class="formulario-alterar" type="text" id="disciplina-bloco-sala-${disciplina.id}" value="${disciplina.sala.bloco_sala} - ${disciplina.sala.numero_sala}"></th>
                 <th class="col-sm-9"><input class="formulario-alterar" type="text" id="disciplina-dia-semana-${disciplina.id}" value="${disciplina.dia_semana}"></th>
                 <th class="col-sm-9"><input class="formulario-alterar" type="text" id="disciplina-periodo-${disciplina.id}" value="${disciplina.periodo}"></th>
                 <th class="col-sm-9"><button onclick="excluirDiscplina(${disciplina.id})" id="deletar" class="btn btn-success">Deletar</button></th>
