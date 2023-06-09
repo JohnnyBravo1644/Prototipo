@@ -135,9 +135,9 @@ app.get('/disciplina/:id', (request, response) => {
 });
 
 app.post('/disciplina/inserir', (request, response) => {
-  const { nomeDisciplina, professorId, diaSemana, periodo } = request.body;
+  const { nomeDisciplina, professorId, diaSemana, periodo, salaId, quantidadeAlunos } = request.body;
 
-  if (!nomeDisciplina || !professorId || !diaSemana || !periodo) {
+  if (!nomeDisciplina || !professorId || !diaSemana || !periodo || !salaId || !quantidadeAlunos) {
     return response.status(400).send('Campos obrigatórios não foram fornecidos');
   }
 
@@ -155,20 +155,38 @@ app.post('/disciplina/inserir', (request, response) => {
       }
 
       pool.query(
-        'INSERT INTO disciplinas (nome, professor_id, dia_semana, periodo) VALUES ($1, $2, $3, $4)',
-        [nomeDisciplina, professorId, diaSemana, periodo],
+        'SELECT capacidade_sala FROM salas WHERE id = $1',
+        [salaId],
         (err, result) => {
           if (err) {
             console.error(err);
             return response.status(500).send('Erro no servidor');
           }
 
-          response.status(201).send('Disciplina cadastrada com sucesso');
+          const capacidadeSala = result.rows[0].capacidade_sala;
+
+          if (capacidadeSala < quantidadeAlunos) {
+            return response.status(200).json({ message: 'Esta sala não suporta a quantidade de alunos!' });
+          }
+
+          pool.query(
+            'INSERT INTO disciplinas (nome, professor_id, dia_semana, periodo, sala_id, alunos_quantidade) VALUES ($1, $2, $3, $4, $5, $6)',
+            [nomeDisciplina, professorId, diaSemana, periodo, salaId, quantidadeAlunos],
+            (err, result) => {
+              if (err) {
+                console.error(err);
+                return response.status(500).send('Erro no servidor');
+              }
+
+              response.status(201).send('Disciplina cadastrada com sucesso');
+            }
+          );
         }
       );
     }
   );
 });
+
 
 app.put('/disciplina/alterar/:id', (request, response) => {
   const id = request.params.id;
