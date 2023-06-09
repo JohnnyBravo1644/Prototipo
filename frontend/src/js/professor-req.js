@@ -1,3 +1,20 @@
+const inserirProfessor = (professor = {}) => {
+    const nome = document.getElementById('nome').value;
+    const formacao = document.getElementById('formacao').value;
+    const email = document.getElementById('email').value;
+        fetch('http://localhost:3002/professor/inserir', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        body: JSON.stringify({nomeProfessor: nome, formacaoProfessor: formacao, emailProfessor: email})
+    }).then(async (resposta) => {
+        mostrarMensagem(await resposta.json());
+        console.log('professor', professor);
+        limparCampos()
+    })
+};
+
 const carregarProfesores = () => {
     fetch('http://localhost:3002/professores')
         .then((response) => {
