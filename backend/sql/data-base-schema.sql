@@ -13,7 +13,10 @@ CREATE TABLE disciplinas (
     professor_id INT,
     dia_semana VARCHAR(20),
     periodo VARCHAR(20) NOT NULL,
-    FOREIGN KEY (professor_id) REFERENCES professores (id)
+    sala_id INT,
+    alunos_quantidade INT,
+    FOREIGN KEY (professor_id) REFERENCES professores (id),
+    FOREIGN KEY (sala_id) REFERENCES salas (id)
 );
 
 CREATE TABLE salas (
@@ -23,6 +26,10 @@ CREATE TABLE salas (
     capacidade_sala INT
 );
 
+CREATE TABLE graduacao (
+    id SERIAL PRIMARY KEY,
+    nome_graduacao VARCHAR(100) NOT NULL
+);
 
 -- Inserir conteúdo na tabela de professores
 
@@ -37,11 +44,11 @@ VALUES ('Ricardo Alexandre Vargas Barbosa', 'rbfigura@gmail.com', 'Mestrado em E
 
 -- Inserir conteúdo na tabela de disciplinas
 
-INSERT INTO disciplinas (nome, professor_id, professor_email, periodo)
-VALUES ('Desenvolvimento Web', 2, 'welquerka@gmail.com', 'Noturno');
+INSERT INTO disciplinas (nome, professor_id, periodo, sala_id, alunos_quantidade)
+VALUES ('Desenvolvimento Web', 2, 'Noturno', 1, 15);
 
-INSERT INTO disciplinas (nome, professor_id, professor_email, periodo)
-VALUES ('Auditoria e Seguranca', 3, 'rbfigura@gmail.com', 'Noturno');
+INSERT INTO disciplinas (nome, professor_id, periodo, sala_id, alunos_quantidade)
+VALUES ('Auditoria e Seguranca', 3, 'Noturno', 2, 15);
 
 -- Inserir conteúdo na tabela de salas
 
@@ -52,5 +59,21 @@ INSERT INTO salas (numero_sala, bloco_sala, capacidade_sala)
 VALUES ('2', 'A', 30);
 
 INSERT INTO salas (numero_sala, bloco_sala, capacidade_sala)
-VALUES ('2', 'A', 45);
+VALUES ('3', 'A', 45);
 
+INSERT INTO salas (numero_sala, bloco_sala, capacidade_sala)
+VALUES ('4', 'A', 45);
+
+INSERT INTO salas (numero_sala, bloco_sala, capacidade_sala)
+VALUES ('5', 'A', 20);
+
+INSERT INTO salas (numero_sala, bloco_sala, capacidade_sala)
+VALUES ('6', 'A', 20);
+
+-- Inserir conteúdo na tabela de salas
+
+INSERT INTO graduacao (nome_graduacao)
+VALUES ('Sistemas de Informação');
+
+INSERT INTO graduacao (nome_graduacao)
+VALUES ('Direito');
