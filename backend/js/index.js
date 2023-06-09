@@ -225,3 +225,17 @@ const PORT = 3002;
 app.listen(PORT, () => {
   console.log(`server started`);
 });
+
+//salas
+
+app.get('/salas', (request, response) => {
+  pool.query(`SELECT * FROM salas`, (err, rows, fields) => {
+    if (err) {
+
+      console.error(err);
+      return response.status(500).send('Erro ao obter os dados das salas');
+    }
+
+    return response.status(200).json(rows);
+  });
+});
