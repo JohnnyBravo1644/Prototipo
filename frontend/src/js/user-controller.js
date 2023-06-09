@@ -3,6 +3,8 @@ const inserirDiscplina = (disciplina = {}) => {
     const professorId = document.getElementById('nome-do-professor').value;
     const diaSemana = document.getElementById('disciplina-dia-semana').value;
     const periodo = document.getElementById('disciplina-periodo').value;
+    const salaId = document.getElementById('selecionar-sala').value;
+    const quantidadeAlunos = document.getElementById('quantidade-de-alunos').value;
 
         fetch('http://localhost:3002/disciplina/inserir', {
             method: 'POST',
@@ -10,7 +12,7 @@ const inserirDiscplina = (disciplina = {}) => {
                 'Content-Type': 'application/json'
             },
 
-        body: JSON.stringify({nomeDisciplina: nomeDaDisciplina, professorId: professorId, diaSemana: diaSemana, periodo: periodo})
+        body: JSON.stringify({nomeDisciplina: nomeDaDisciplina, professorId: professorId, diaSemana: diaSemana, periodo: periodo, salaId: salaId, quantidadeAlunos: quantidadeAlunos})
 
     }).then(async (resposta) => {
         mostrarMensagem(await resposta.json());
