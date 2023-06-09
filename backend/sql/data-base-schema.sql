@@ -16,6 +16,14 @@ CREATE TABLE disciplinas (
     FOREIGN KEY (professor_id) REFERENCES professores (id)
 );
 
+CREATE TABLE salas (
+    id SERIAL PRIMARY KEY,
+    numero_sala VARCHAR(100) NOT NULL,
+    bloco_sala VARCHAR(100) NOT NULL,
+    capacidade_sala INT
+);
+
+
 -- Inserir conteúdo na tabela de professores
 
 INSERT INTO professores (nome, email, formacao)
@@ -34,3 +42,15 @@ VALUES ('Desenvolvimento Web', 2, 'welquerka@gmail.com', 'Noturno');
 
 INSERT INTO disciplinas (nome, professor_id, professor_email, periodo)
 VALUES ('Auditoria e Seguranca', 3, 'rbfigura@gmail.com', 'Noturno');
+
+-- Inserir conteúdo na tabela de salas
+
+INSERT INTO salas (numero_sala, bloco_sala, capacidade_sala)
+VALUES ('1', 'A', 30);
+
+INSERT INTO salas (numero_sala, bloco_sala, capacidade_sala)
+VALUES ('2', 'A', 30);
+
+INSERT INTO salas (numero_sala, bloco_sala, capacidade_sala)
+VALUES ('2', 'A', 45);
+
