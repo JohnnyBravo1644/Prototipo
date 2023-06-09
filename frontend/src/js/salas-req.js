@@ -14,7 +14,7 @@ const selecionarSalaDisciplina = () => {
   
         dados.forEach(function (sala) {
           var option = document.createElement("option");
-          option.textContent = sala.capacidade_sala;
+          option.textContent = sala.bloco_sala + ' - ' + sala.numero_sala;
           option.value = sala.id;
           select2.appendChild(option);
         });
