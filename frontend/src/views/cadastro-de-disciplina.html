@@ -50,16 +50,24 @@
                 <div class="mb-3">
                     <label for="nome do professor" class="formulario__label form-label">Nome do Professor</label>
                     <select type="text" class="formulario__input form-select" id="nome-do-professor">
-                       
                         <option>Nenhum</option>
                     </select>
                 </div>
 
-                <div class="mb-3">
-                    <label for="sala de aula" class="formulario__label form-label">Sala de Aula</label>
-                    <select type="text" class="formulario__input form-select" id="selecionar-sala">
-                        <option >Nenhuma</option>
-                    </select>
+                <div class="formulario__caixa-organisacao">
+
+                    <div class="mb-3">
+                        <label for="sala de aula" class="formulario__label form-label">Sala de Aula</label>
+                        <select type="text" class="formulario__input form-select quantidade-de-alunos" id="selecionar-sala">
+                            <option >Nenhuma</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="formulario__label form-label">Quantidade de Alunos</label>
+                        <input class="formulario__input form-control" id="quantidade-de-alunos" type="number" min="0" max="100">
+                    </div>
+
                 </div>
                 
                 <div class="mb-3">

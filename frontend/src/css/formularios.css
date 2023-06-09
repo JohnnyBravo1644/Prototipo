@@ -23,3 +23,11 @@
 }
 
 .formulario-alterar{}
+
+.formulario__caixa-organisacao{
+    display: inline-flex;
+}
+
+.quantidade-de-alunos{
+    padding: 0px 10px;
+}
