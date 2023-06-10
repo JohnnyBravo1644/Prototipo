@@ -162,18 +162,18 @@ app.post('/disciplina/inserir', (request, response) => {
   }
 
   pool.query(
-    'SELECT * FROM disciplinas WHERE professor_id = $1 AND dia_semana = $2',
-    [professorId, diaSemana],
+    'SELECT * FROM disciplinas WHERE dia_semana = $1 AND periodo = $2 AND sala_id = $3',
+    [diaSemana, periodo, salaId],
     (err, result) => {
       if (err) {
         console.error(err);
         return response.status(500).send('Erro no servidor');
       }
-
+  
       if (result.rows.length > 0) {
-        return response.status(200).json({ massage: 'Professor está indisponível neste dia' });
+        return response.status(200).json({ message: 'A sala já está reservada para este horário' });
       }
-
+  
       pool.query(
         'SELECT capacidade_sala FROM salas WHERE id = $1',
         [salaId],
@@ -182,13 +182,13 @@ app.post('/disciplina/inserir', (request, response) => {
             console.error(err);
             return response.status(500).send('Erro no servidor');
           }
-
+  
           const capacidadeSala = result.rows[0].capacidade_sala;
-
+  
           if (capacidadeSala < quantidadeAlunos) {
             return response.status(200).json({ message: 'Esta sala não suporta a quantidade de alunos!' });
           }
-
+  
           pool.query(
             'INSERT INTO disciplinas (nome, professor_id, dia_semana, periodo, sala_id, alunos_quantidade) VALUES ($1, $2, $3, $4, $5, $6)',
             [nomeDisciplina, professorId, diaSemana, periodo, salaId, quantidadeAlunos],
@@ -197,7 +197,7 @@ app.post('/disciplina/inserir', (request, response) => {
                 console.error(err);
                 return response.status(500).send('Erro no servidor');
               }
-
+  
               response.status(201).send('Disciplina cadastrada com sucesso');
             }
           );
