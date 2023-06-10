@@ -215,33 +215,6 @@ app.put('/disciplina/alterar/:id', (request, response) => {
   }
   const { nomeDisciplina, professorId, diaSemana, periodo, salaId } = request.body;
 
-  /*pool.query(
-    'SELECT * FROM disciplinas WHERE professor_id = $1 AND dia_semana = $2 AND periodo = $3 AND sala_id = $4 AND id <> $5',
-    [professorId, diaSemana, periodo, salaId, id],
-    (err, result) => {
-      if (err) {
-        console.error(err);
-        return response.status(500).send('Erro no servidor');
-      }
-  
-      if (result.rows.length > 0) {
-        return response.status(400).send('O professor já possui aula neste dia e horário');
-      }
-
-      pool.query(
-        `UPDATE disciplinas SET nome='${nomeDisciplina}', professor_id='${professorId}', dia_semana='${diaSemana}', periodo='${periodo}', sala_id='${salaId}' WHERE id='${id}';`,
-        (err, result) => {
-          if (err) {
-            console.error(err);
-            return response.status(500).send('Ocorreu um erro ao atualizar a disciplina');
-          }
-
-          return response.status(200).send('Disciplina alterada com sucesso');
-        }
-      );
-    }
-  );*/
-
   pool.query(
     'SELECT * FROM disciplinas WHERE dia_semana = $1 AND periodo = $2 AND sala_id = $3 AND id <> $4',
     [diaSemana, periodo, salaId, id],
@@ -269,7 +242,6 @@ app.put('/disciplina/alterar/:id', (request, response) => {
     }
   );
   
-
 });
 
 
