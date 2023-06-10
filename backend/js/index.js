@@ -118,6 +118,25 @@ async function getSalaById(id) {
   });
 }
 
+async function getDisciplinaById(id) {
+  return new Promise((resolve, reject) => {
+    pool.query('SELECT * FROM disciplinas WHERE id = $1', [id], (err, result) => {
+      if (err) {
+        console.error('Erro ao executar a consulta:', err);
+        return response.status(500).send('Erro no servidor');
+      }
+  
+      const disciplina = result.rows[0];
+
+      
+      if (!disciplina) {
+        return response.status(404).send('disciplina não encontrada');
+      }
+      resolve(disciplina);
+    }) 
+  });
+}
+
 app.get('/horarios', (request, response) => {
   pool.query(`SELECT * FROM horarios`, async (err, result, fields) => {
     const horarios = await Promise.all(
@@ -288,18 +307,18 @@ async function getGraduacaoById(id) {
         return response.status(500).send('Erro no servidor');
       }
   
-      const professor = result.rows[0];
+      const graduacao = result.rows[0];
   
-      if (!professor) {
+      if (!graduacao) {
         return response.status(404).send('graduacao não encontrada');
       }
   
-      resolve(professor);
+      resolve(graduacao);
     }) 
   });
 }
 
-app.get('/disciplinas/teste', (request, response) => {
+app.get('/disciplinas', (request, response) => {
   pool.query(`SELECT * FROM disciplinas`, async (err, result, fields) => {
     const disciplina = await Promise.all(
       result.rows.map(async (row) => {
@@ -312,17 +331,5 @@ app.get('/disciplinas/teste', (request, response) => {
       }),
     )
     return response.status(200).send(disciplina);
-  });
-});
-
-app.get('/disciplinas', (request, response) => {
-  pool.query(`SELECT * FROM disciplinas`, (err, rows, fields) => {
-    if (err) {
-
-      console.error(err);
-      return response.status(500).send('Erro ao obter os dados das disciplinas');
-    }
-
-    return response.status(200).json(rows);
   });
 });
