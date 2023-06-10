@@ -9,15 +9,15 @@ const inserirHorario = (disciplina = {}) => {
     const periodo = document.getElementById('disciplina-periodo').value;
     const salaId = document.getElementById('selecionar-sala').value;
     const quantidadeAlunos = document.getElementById('quantidade-de-alunos').value;
-
-        fetch('http://localhost:3002/horario/inserir', {
+    
+    fetch('http://localhost:3002/horario/inserir', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
 
         body: JSON.stringify({nomeHorario: nomeHorario, professorId: professorId, diaSemana: diaSemana, periodo: periodo, salaId: salaId, quantidadeAlunos: quantidadeAlunos})
-
+        
     }).then(async (resposta) => {
         mostrarMensagem(await resposta.json());
         console.log('Disciplina', disciplina);
@@ -27,16 +27,16 @@ const inserirHorario = (disciplina = {}) => {
 
 const carregarHorario = () => {
     fetch('http://localhost:3002/horarios')
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error('Erro ao obter os dados das disciplinas');
+    .then((response) => {
+        if (!response.ok) {
+            throw new Error('Erro ao obter os dados das disciplinas');
             }
             return response.json();
         })
         .then((data) => {
             const dados = data.rows;
             console.log(data)
-
+            
             document.getElementById('disciplinas').innerHTML = data.reverse().reduce((acumulador, disciplina) => {
                 console.log('Discplina', disciplina)
                 return acumulador + `
@@ -49,17 +49,25 @@ const carregarHorario = () => {
                 <th class="col-sm-9"><input class="formulario-alterar" type="text" id="disciplina-periodo-${disciplina.id}" value="${disciplina.periodo}"></th>
                 <th class="col-sm-9"><button onclick="excluirHorario(${disciplina.id})" id="deletar" class="btn btn-success">Deletar</button></th>
                 <th class="col-sm-9"><button onclick="alterarHorario(${disciplina.id})" id="atualizar" class="btn btn-success">Atualizar</button></th>
-            </tr>
+                </tr>
                 `;
             },
-             '', );
+            '', );
             esconderIconeCarregando()
         })
         .catch((error) => {
             console.error(error);
         });
-};
-carregarHorario()
+    };
+    carregarHorario()
+
+    const excluirHorario = (id) => {
+        fetch (`http://localhost:3002/horario/deletar/${id}`,{
+            method: 'DELETE',
+        }).then(async (resposta) => {
+            mostrarMensagem(await resposta.json('Disciplina deletada com sucesso'));
+        })
+    };
 
 const selecionarProfessorHorario = () => {
     fetch('http://localhost:3002/professores')
@@ -123,7 +131,6 @@ const selecionarSalaHorario = () => {
               return sala;
             }
           });
-          // Restante do seu código aqui...
   
         });
       })
@@ -133,10 +140,37 @@ const selecionarSalaHorario = () => {
   };
 selecionarSalaHorario();
 
-const excluirHorario = (id) => {
-    fetch (`http://localhost:3002/horario/deletar/${id}`,{
-        method: 'DELETE',
-    }).then(async (resposta) => {
-        mostrarMensagem(await resposta.json('Disciplina deletada com sucesso'));
-    })
-};
+const selecionarDisciplinaHorario = () => {
+    fetch('http://localhost:3002/disciplinas')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Erro ao obter os dados das disciplinas');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        const rows = Array.isArray(data) ? data : [];
+  
+        const selectDisciplina = document.getElementById('selecionar-disciplina');
+  
+        rows.forEach(function (disciplina) {
+          var option = document.createElement("option");
+          option.textContent = disciplina.nome_disciplina + ' - ' + disciplina.graduacao.nome_graduacao;
+          option.value = disciplina.id;
+          selectDisciplina.appendChild(option);
+        });
+  
+        selectDisciplina.addEventListener("change", function () {
+          var disciplinaSelecionado = selectDisciplina.value;
+          var disciplinaSelecionadoData = rows.find(function (disciplina) {
+            if (disciplina.id == disciplinaSelecionado) {
+              return disciplina;
+            }
+          });
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+  selecionarDisciplinaHorario()
