@@ -28,6 +28,8 @@
     display: inline-flex;
 }
 
+.formulario__caixa-organisacao-seletor{padding: 0em 1vw;}
+
 .quantidade-de-alunos{
     padding: 0px 10px;
 }
