@@ -3,7 +3,7 @@ var professorContainer = document.getElementById("selecionar-professor");
 var emailInput = document.getElementById("disciplina-email");
 
 const inserirHorario = (disciplina = {}) => {
-    const nomeHorario = document.getElementById('nome-da-disciplina').value;
+    const nomeHorario = document.getElementById('selecionar-disciplina').value;
     const professorId = document.getElementById('nome-do-professor').value;
     const diaSemana = document.getElementById('disciplina-dia-semana').value;
     const periodo = document.getElementById('disciplina-periodo').value;
