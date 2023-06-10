@@ -78,7 +78,7 @@ app.put('/professor/alterar/:id', (request, response) => {
   });
 });
 
-//Disciplinas
+//horarios
 
 async function getProfessorById(id) {
   return new Promise((resolve, reject) => {
@@ -118,9 +118,9 @@ async function getSalaById(id) {
   });
 }
 
-app.get('/disciplinas', (request, response) => {
-  pool.query(`SELECT * FROM disciplinas`, async (err, result, fields) => {
-    const disciplinas = await Promise.all(
+app.get('/horarios', (request, response) => {
+  pool.query(`SELECT * FROM horarios`, async (err, result, fields) => {
+    const horarios = await Promise.all(
       result.rows.map(async (row) => {
         return new Promise(async (resolve) => {
           resolve({
@@ -131,38 +131,38 @@ app.get('/disciplinas', (request, response) => {
         }) 
       }),
     )
-    return response.status(200).send(disciplinas);
+    return response.status(200).send(horarios);
   });
 });
 
-app.get('/disciplina/:id', (request, response) => {
+app.get('/horario/:id', (request, response) => {
   const id = request.params.id;
 
-  pool.query('SELECT * FROM disciplinas WHERE id = $1', [id], (err, result) => {
+  pool.query('SELECT * FROM horarios WHERE id = $1', [id], (err, result) => {
     if (err) {
       console.error('Erro ao executar a consulta:', err);
       return response.status(500).send('Erro no servidor');
     }
 
-    const disciplina = result.rows[0];
+    const horario = result.rows[0];
 
-    if (!disciplina) {
-      return response.status(404).send('Disciplina não encontrada');
+    if (!horario) {
+      return response.status(404).send('horario não encontrada');
     }
 
-    return response.status(200).send(disciplina);
+    return response.status(200).send(horario);
   });
 });
 
-app.post('/disciplina/inserir', (request, response) => {
-  const { nomeDisciplina, professorId, diaSemana, periodo, salaId, quantidadeAlunos } = request.body;
+app.post('/horario/inserir', (request, response) => {
+  const { nomeHorario, professorId, diaSemana, periodo, salaId, quantidadeAlunos } = request.body;
 
-  if (!nomeDisciplina || !professorId || !diaSemana || !periodo || !salaId || !quantidadeAlunos) {
+  if (!nomeHorario || !professorId || !diaSemana || !periodo || !salaId || !quantidadeAlunos) {
     return response.status(400).send('Campos obrigatórios não foram fornecidos');
   }
 
   pool.query(
-    'SELECT * FROM disciplinas WHERE dia_semana = $1 AND periodo = $2 AND sala_id = $3',
+    'SELECT * FROM horarios WHERE dia_semana = $1 AND periodo = $2 AND sala_id = $3',
     [diaSemana, periodo, salaId],
     (err, result) => {
       if (err) {
@@ -190,15 +190,15 @@ app.post('/disciplina/inserir', (request, response) => {
           }
   
           pool.query(
-            'INSERT INTO disciplinas (nome, professor_id, dia_semana, periodo, sala_id, alunos_quantidade) VALUES ($1, $2, $3, $4, $5, $6)',
-            [nomeDisciplina, professorId, diaSemana, periodo, salaId, quantidadeAlunos],
+            'INSERT INTO horarios (nome, professor_id, dia_semana, periodo, sala_id, alunos_quantidade) VALUES ($1, $2, $3, $4, $5, $6)',
+            [nomeHorario, professorId, diaSemana, periodo, salaId, quantidadeAlunos],
             (err, result) => {
               if (err) {
                 console.error(err);
                 return response.status(500).send('Erro no servidor');
               }
   
-              response.status(201).send('Disciplina cadastrada com sucesso');
+              response.status(201).send('horario cadastrado com sucesso');
             }
           );
         }
@@ -208,15 +208,15 @@ app.post('/disciplina/inserir', (request, response) => {
 });
 
 
-app.put('/disciplina/alterar/:id', (request, response) => {
+app.put('/horario/alterar/:id', (request, response) => {
   const id = request.params.id;
   if (!id) {
     return response.status(400).send('Dados inválidos!');
   }
-  const { nomeDisciplina, professorId, diaSemana, periodo, salaId } = request.body;
+  const { nomeHorario, professorId, diaSemana, periodo, salaId } = request.body;
 
   pool.query(
-    'SELECT * FROM disciplinas WHERE dia_semana = $1 AND periodo = $2 AND sala_id = $3 AND id <> $4',
+    'SELECT * FROM horarios WHERE dia_semana = $1 AND periodo = $2 AND sala_id = $3 AND id <> $4',
     [diaSemana, periodo, salaId, id],
     (err, result) => {
       if (err) {
@@ -229,34 +229,33 @@ app.put('/disciplina/alterar/:id', (request, response) => {
       }
   
       pool.query(
-        `UPDATE disciplinas SET nome='${nomeDisciplina}', professor_id='${professorId}', dia_semana='${diaSemana}', periodo='${periodo}', sala_id='${salaId}' WHERE id='${id}';`,
+        `UPDATE horarios SET nome='${nomeHorario}', professor_id='${professorId}', dia_semana='${diaSemana}', periodo='${periodo}', sala_id='${salaId}' WHERE id='${id}';`,
         (err, result) => {
           if (err) {
             console.error(err);
-            return response.status(500).send('Ocorreu um erro ao atualizar a disciplina');
+            return response.status(500).send('Ocorreu um erro ao atualizar a horario');
           }
   
-          return response.status(200).send('Disciplina alterada com sucesso');
+          return response.status(200).send('horario alterado com sucesso');
         }
       );
     }
   );
-  
+
 });
 
-
-app.delete('/disciplina/deletar/:id', (request, response) => {
+app.delete('/horario/deletar/:id', (request, response) => {
   const id = request.params.id;
   if (!id) {
     return response.status(400).send('Dados invalidos!');
   }
-  pool.query(`DELETE FROM disciplinas WHERE id = ${id}`, (err, result) => {
+  pool.query(`DELETE FROM horarios WHERE id = ${id}`, (err, result) => {
     if (err) {
       console.error('Erro ao executar a consulta:', err);
       return response.status(500).send('Erro no servidor');
     }
 
-    return response.status(200).send("Disciplina deletada com sucesso");
+    return response.status(200).send("horario deletada com sucesso");
   });
 });
 

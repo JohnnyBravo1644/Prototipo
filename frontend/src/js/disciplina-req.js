@@ -2,21 +2,21 @@ var select = document.getElementById("nome-do-professor");
 var professorContainer = document.getElementById("selecionar-professor");
 var emailInput = document.getElementById("disciplina-email");
 
-const inserirDiscplina = (disciplina = {}) => {
-    const nomeDaDisciplina = document.getElementById('nome-da-disciplina').value;
+const inserirHorario = (disciplina = {}) => {
+    const nomeHorario = document.getElementById('nome-da-disciplina').value;
     const professorId = document.getElementById('nome-do-professor').value;
     const diaSemana = document.getElementById('disciplina-dia-semana').value;
     const periodo = document.getElementById('disciplina-periodo').value;
     const salaId = document.getElementById('selecionar-sala').value;
     const quantidadeAlunos = document.getElementById('quantidade-de-alunos').value;
 
-        fetch('http://localhost:3002/disciplina/inserir', {
+        fetch('http://localhost:3002/horario/inserir', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
 
-        body: JSON.stringify({nomeDisciplina: nomeDaDisciplina, professorId: professorId, diaSemana: diaSemana, periodo: periodo, salaId: salaId, quantidadeAlunos: quantidadeAlunos})
+        body: JSON.stringify({nomeHorario: nomeHorario, professorId: professorId, diaSemana: diaSemana, periodo: periodo, salaId: salaId, quantidadeAlunos: quantidadeAlunos})
 
     }).then(async (resposta) => {
         mostrarMensagem(await resposta.json());
@@ -25,8 +25,8 @@ const inserirDiscplina = (disciplina = {}) => {
     })
 };
 
-const carregarDisciplinas = () => {
-    fetch('http://localhost:3002/disciplinas')
+const carregarHorario = () => {
+    fetch('http://localhost:3002/horarios')
         .then((response) => {
             if (!response.ok) {
                 throw new Error('Erro ao obter os dados das disciplinas');
@@ -47,8 +47,8 @@ const carregarDisciplinas = () => {
                 <th class="col-sm-9">${disciplina.sala.bloco_sala} - ${disciplina.sala.numero_sala}</th>
                 <th class="col-sm-9"><input class="formulario-alterar" type="text" id="disciplina-dia-semana-${disciplina.id}" value="${disciplina.dia_semana}"></th>
                 <th class="col-sm-9"><input class="formulario-alterar" type="text" id="disciplina-periodo-${disciplina.id}" value="${disciplina.periodo}"></th>
-                <th class="col-sm-9"><button onclick="excluirDiscplina(${disciplina.id})" id="deletar" class="btn btn-success">Deletar</button></th>
-                <th class="col-sm-9"><button onclick="alterarDiscplinas(${disciplina.id})" id="atualizar" class="btn btn-success">Atualizar</button></th>
+                <th class="col-sm-9"><button onclick="excluirHorario(${disciplina.id})" id="deletar" class="btn btn-success">Deletar</button></th>
+                <th class="col-sm-9"><button onclick="alterarHorario(${disciplina.id})" id="atualizar" class="btn btn-success">Atualizar</button></th>
             </tr>
                 `;
             },
@@ -59,9 +59,9 @@ const carregarDisciplinas = () => {
             console.error(error);
         });
 };
-carregarDisciplinas()
+carregarHorario()
 
-const selecionarProfessorDisciplina = () => {
+const selecionarProfessorHorario = () => {
     fetch('http://localhost:3002/professores')
     .then((response) => {
             if (!response.ok) {
@@ -93,10 +93,10 @@ const selecionarProfessorDisciplina = () => {
             console.error(error);
         });
 };
-selecionarProfessorDisciplina();
+selecionarProfessorHorario();
 
-const excluirDiscplina = (id) => {
-    fetch (`http://localhost:3002/disciplina/deletar/${id}`,{
+const excluirHorario = (id) => {
+    fetch (`http://localhost:3002/horario/deletar/${id}`,{
         method: 'DELETE',
     }).then(async (resposta) => {
         mostrarMensagem(await resposta.json('Disciplina deletada com sucesso'));
