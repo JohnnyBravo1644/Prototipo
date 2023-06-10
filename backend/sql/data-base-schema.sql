@@ -9,12 +9,13 @@ CREATE TABLE professores (
 
 CREATE TABLE horarios (
     id SERIAL PRIMARY KEY,
-    nome VARCHAR(100) NOT NULL,
+    disciplina_id INT,
     professor_id INT,
     dia_semana VARCHAR(20),
     periodo VARCHAR(20) NOT NULL,
     sala_id INT,
     alunos_quantidade INT,
+    FOREIGN KEY (disciplina_id) REFERENCES disciplina (id),
     FOREIGN KEY (professor_id) REFERENCES professores (id),
     FOREIGN KEY (sala_id) REFERENCES salas (id)
 );
@@ -50,14 +51,6 @@ VALUES ('Welquer Esser', 'welquerka@gmail.com', 'Pós Graduação em Sistemas de
 
 INSERT INTO professores (nome, email, formacao)
 VALUES ('Ricardo Alexandre Vargas Barbosa', 'rbfigura@gmail.com', 'Mestrado em Engenharia de Softwere');
-
--- Inserir conteúdo na tabela de horarios
-
-INSERT INTO horarios (nome, professor_id, periodo, sala_id, alunos_quantidade)
-VALUES ('Desenvolvimento Web', 2, 'Noturno', 1, 15);
-
-INSERT INTO horarios (nome, professor_id, periodo, sala_id, alunos_quantidade)
-VALUES ('Auditoria e Seguranca', 3, 'Noturno', 2, 15);
 
 -- Inserir conteúdo na tabela de salas
 
@@ -109,3 +102,11 @@ VALUES (1, 'Auditoria e Segurança', false);
 
 INSERT INTO disciplinas (graduacao_id, nome_disciplina, mix)
 VALUES (1, 'Computador e Sociedade', false);
+
+-- Inserir conteúdo na tabela de horarios
+
+INSERT INTO horarios (disciplina_id, professor_id, periodo, sala_id, alunos_quantidade)
+VALUES ('1', 2, 'Noturno', 1, 15);
+
+INSERT INTO horarios (disciplina_id, professor_id, periodo, sala_id, alunos_quantidade)
+VALUES ('6', 3, 'Noturno', 2, 15);
