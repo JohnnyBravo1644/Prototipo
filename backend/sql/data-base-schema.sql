@@ -89,23 +89,23 @@ VALUES ('Engenharia de Pesca');
 
 -- Inserir conteúdo na tabela de disciplina
 
-INSERT INTO disciplina (graduacao_id, nome_disciplina, mix)
+INSERT INTO disciplinas (graduacao_id, nome_disciplina, mix)
 VALUES (1, 'Desenvolvimento Web', false);
 
-INSERT INTO disciplina (graduacao_id, nome_disciplina, mix)
+INSERT INTO disciplinas (graduacao_id, nome_disciplina, mix)
 VALUES (1, 'Desenvolvimento de Prototipo', false);
 
-INSERT INTO disciplina (graduacao_id, nome_disciplina, mix)
+INSERT INTO disciplinas (graduacao_id, nome_disciplina, mix)
 VALUES (1, 'Gestão de Projetos', false);
 
-INSERT INTO disciplina (graduacao_id, nome_disciplina, mix)
+INSERT INTO disciplinas (graduacao_id, nome_disciplina, mix)
 VALUES (1, 'Redes de Computadores', false);
 
-INSERT INTO disciplina (graduacao_id, nome_disciplina, mix)
+INSERT INTO disciplinas (graduacao_id, nome_disciplina, mix)
 VALUES (1, 'Redes de Computadores II', false);
 
-INSERT INTO disciplina (graduacao_id, nome_disciplina, mix)
+INSERT INTO disciplinas (graduacao_id, nome_disciplina, mix)
 VALUES (1, 'Auditoria e Segurança', false);
 
-INSERT INTO disciplina (graduacao_id, nome_disciplina, mix)
+INSERT INTO disciplinas (graduacao_id, nome_disciplina, mix)
 VALUES (1, 'Computador e Sociedade', false);
