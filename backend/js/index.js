@@ -268,7 +268,7 @@ app.put('/horario/alterar/:id', (request, response) => {
       }
   
       pool.query(
-        `UPDATE horarios SET nome='${nomeHorario}', professor_id='${professorId}', dia_semana='${diaSemana}', periodo='${periodo}', sala_id='${salaId}' WHERE id='${id}';`,
+        `UPDATE horarios SET disciplina_id='${nomeHorario}', professor_id='${professorId}', dia_semana='${diaSemana}', periodo='${periodo}', sala_id='${salaId}' WHERE id='${id}';`,
         (err, result) => {
           if (err) {
             console.error(err);
