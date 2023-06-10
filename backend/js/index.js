@@ -277,3 +277,52 @@ app.get('/salas', (request, response) => {
     return response.status(200).json(rows);
   });
 });
+
+//disciplinas
+
+async function getGraduacaoById(id) {
+  return new Promise((resolve, reject) => {
+    pool.query('SELECT * FROM graduacao WHERE id = $1', [id], (err, result) => {
+      if (err) {
+        console.error('Erro ao executar a consulta:', err);
+        return response.status(500).send('Erro no servidor');
+      }
+  
+      const professor = result.rows[0];
+  
+      if (!professor) {
+        return response.status(404).send('graduacao não encontrada');
+      }
+  
+      resolve(professor);
+    }) 
+  });
+}
+
+app.get('/disciplinas/teste', (request, response) => {
+  pool.query(`SELECT * FROM disciplinas`, async (err, result, fields) => {
+    const disciplina = await Promise.all(
+      result.rows.map(async (row) => {
+        return new Promise(async (resolve) => {
+          resolve({
+            ...row, 
+            graduacao : await getGraduacaoById(row.graduacao_id)
+          })
+        }) 
+      }),
+    )
+    return response.status(200).send(disciplina);
+  });
+});
+
+app.get('/disciplinas', (request, response) => {
+  pool.query(`SELECT * FROM disciplinas`, (err, rows, fields) => {
+    if (err) {
+
+      console.error(err);
+      return response.status(500).send('Erro ao obter os dados das disciplinas');
+    }
+
+    return response.status(200).json(rows);
+  });
+});
