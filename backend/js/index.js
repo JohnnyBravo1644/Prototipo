@@ -130,6 +130,25 @@ async function getDisciplinaById(id) {
 
       
       if (!disciplina) {
+        return response.status(404).send('Disciplina não encontrado');
+      }
+      resolve(disciplina);
+    }) 
+  });
+}
+
+async function getDisciplinaById(id) {
+  return new Promise((resolve, reject) => {
+    pool.query('SELECT * FROM disciplinas WHERE id = $1', [id], (err, result) => {
+      if (err) {
+        console.error('Erro ao executar a consulta:', err);
+        return response.status(500).send('Erro no servidor');
+      }
+  
+      const disciplina = result.rows[0];
+
+      
+      if (!disciplina) {
         return response.status(404).send('disciplina não encontrada');
       }
       resolve(disciplina);
@@ -145,7 +164,8 @@ app.get('/horarios', (request, response) => {
           resolve({
             ...row, 
             professor : await getProfessorById(row.professor_id),
-            sala : await getSalaById(row.sala_id)
+            sala : await getSalaById(row.sala_id),
+            disciplina : await getDisciplinaById(row.disciplina_id)
           })
         }) 
       }),
@@ -209,7 +229,7 @@ app.post('/horario/inserir', (request, response) => {
           }
   
           pool.query(
-            'INSERT INTO horarios (nome, professor_id, dia_semana, periodo, sala_id, alunos_quantidade) VALUES ($1, $2, $3, $4, $5, $6)',
+            'INSERT INTO horarios (disciplina_id, professor_id, dia_semana, periodo, sala_id, alunos_quantidade) VALUES ($1, $2, $3, $4, $5, $6)',
             [nomeHorario, professorId, diaSemana, periodo, salaId, quantidadeAlunos],
             (err, result) => {
               if (err) {

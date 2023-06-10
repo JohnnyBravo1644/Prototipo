@@ -37,18 +37,18 @@ const carregarHorario = () => {
             const dados = data.rows;
             console.log(data)
             
-            document.getElementById('disciplinas').innerHTML = data.reverse().reduce((acumulador, disciplina) => {
-                console.log('Discplina', disciplina)
+            document.getElementById('disciplinas').innerHTML = data.reverse().reduce((acumulador, horario) => {
+                console.log('Discplina', horario)
                 return acumulador + `
                 <tr>
-                <th "col-sm-3"><input class="formulario-alterar" type="text" id="disciplina-nome-${disciplina.id}" value="${disciplina.nome}"></th>
-                <th class="col-sm-9">${disciplina.professor.nome}</th>
-                <th class="col-sm-9">${disciplina.professor.email}</th>
-                <th class="col-sm-9">${disciplina.sala.bloco_sala} - ${disciplina.sala.numero_sala}</th>
-                <th class="col-sm-9"><input class="formulario-alterar" type="text" id="disciplina-dia-semana-${disciplina.id}" value="${disciplina.dia_semana}"></th>
-                <th class="col-sm-9"><input class="formulario-alterar" type="text" id="disciplina-periodo-${disciplina.id}" value="${disciplina.periodo}"></th>
-                <th class="col-sm-9"><button onclick="excluirHorario(${disciplina.id})" id="deletar" class="btn btn-success">Deletar</button></th>
-                <th class="col-sm-9"><button onclick="alterarHorario(${disciplina.id})" id="atualizar" class="btn btn-success">Atualizar</button></th>
+                <th "col-sm-3"><input class="formulario-alterar" type="text" id="disciplina-nome-${horario.id}" value="${horario.disciplina.nome_disciplina}"></th>
+                <th class="col-sm-9">${horario.professor.nome}</th>
+                <th class="col-sm-9">${horario.professor.email}</th>
+                <th class="col-sm-9">${horario.sala.bloco_sala} - ${horario.sala.numero_sala}</th>
+                <th class="col-sm-9"><input class="formulario-alterar" type="text" id="disciplina-dia-semana-${horario.id}" value="${horario.dia_semana}"></th>
+                <th class="col-sm-9"><input class="formulario-alterar" type="text" id="disciplina-periodo-${horario.id}" value="${horario.periodo}"></th>
+                <th class="col-sm-9"><button onclick="excluirHorario(${horario.id})" id="deletar" class="btn btn-success">Deletar</button></th>
+                <th class="col-sm-9"><button onclick="alterarHorario(${horario.id})" id="atualizar" class="btn btn-success">Atualizar</button></th>
                 </tr>
                 `;
             },
