@@ -7,7 +7,7 @@ CREATE TABLE professores (
     CONSTRAINT professores_unique_key UNIQUE (id, email)
 );
 
-CREATE TABLE disciplinas (
+CREATE TABLE horarios (
     id SERIAL PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     professor_id INT,
@@ -31,6 +31,15 @@ CREATE TABLE graduacao (
     nome_graduacao VARCHAR(100) NOT NULL
 );
 
+CREATE TABLE disciplinas (
+    id SERIAL PRIMARY KEY,
+    graduacao_id INT,
+    nome_disciplina VARCHAR(100) NOT NULL,
+    mix BOOLEAN,
+    quantidade_creditos INT,
+    FOREIGN KEY (graduacao_id) REFERENCES graduacao (id)
+);
+
 -- Inserir conteúdo na tabela de professores
 
 INSERT INTO professores (nome, email, formacao)
@@ -42,12 +51,12 @@ VALUES ('Welquer Esser', 'welquerka@gmail.com', 'Pós Graduação em Sistemas de
 INSERT INTO professores (nome, email, formacao)
 VALUES ('Ricardo Alexandre Vargas Barbosa', 'rbfigura@gmail.com', 'Mestrado em Engenharia de Softwere');
 
--- Inserir conteúdo na tabela de disciplinas
+-- Inserir conteúdo na tabela de horarios
 
-INSERT INTO disciplinas (nome, professor_id, periodo, sala_id, alunos_quantidade)
+INSERT INTO horarios (nome, professor_id, periodo, sala_id, alunos_quantidade)
 VALUES ('Desenvolvimento Web', 2, 'Noturno', 1, 15);
 
-INSERT INTO disciplinas (nome, professor_id, periodo, sala_id, alunos_quantidade)
+INSERT INTO horarios (nome, professor_id, periodo, sala_id, alunos_quantidade)
 VALUES ('Auditoria e Seguranca', 3, 'Noturno', 2, 15);
 
 -- Inserir conteúdo na tabela de salas
@@ -76,4 +85,27 @@ INSERT INTO graduacao (nome_graduacao)
 VALUES ('Sistemas de Informação');
 
 INSERT INTO graduacao (nome_graduacao)
-VALUES ('Direito');
+VALUES ('Engenharia de Pesca');
+
+-- Inserir conteúdo na tabela de disciplina
+
+INSERT INTO disciplina (graduacao_id, nome_disciplina, mix)
+VALUES (1, 'Desenvolvimento Web', false);
+
+INSERT INTO disciplina (graduacao_id, nome_disciplina, mix)
+VALUES (1, 'Desenvolvimento de Prototipo', false);
+
+INSERT INTO disciplina (graduacao_id, nome_disciplina, mix)
+VALUES (1, 'Gestão de Projetos', false);
+
+INSERT INTO disciplina (graduacao_id, nome_disciplina, mix)
+VALUES (1, 'Redes de Computadores', false);
+
+INSERT INTO disciplina (graduacao_id, nome_disciplina, mix)
+VALUES (1, 'Redes de Computadores II', false);
+
+INSERT INTO disciplina (graduacao_id, nome_disciplina, mix)
+VALUES (1, 'Auditoria e Segurança', false);
+
+INSERT INTO disciplina (graduacao_id, nome_disciplina, mix)
+VALUES (1, 'Computador e Sociedade', false);
