@@ -46,6 +46,8 @@ const selecionarProfessorHorario = () => {
             const rows = Array.isArray(data) ? data : [];
             const dados = data.rows;
 
+            const select = document.getElementById('nome-do-professor');
+
             dados.forEach(function (professor) {
                 var option = document.createElement("option");
                 option.textContent = professor.nome;
