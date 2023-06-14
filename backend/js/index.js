@@ -87,15 +87,15 @@ async function getProfessorById(id) {
         console.error('Erro ao executar a consulta:', err);
         return response.status(500).send('Erro no servidor');
       }
-  
+
       const professor = result.rows[0];
-  
+
       if (!professor) {
         return response.status(404).send('Professor não encontrado');
       }
-  
+
       resolve(professor);
-    }) 
+    })
   });
 }
 
@@ -106,15 +106,15 @@ async function getSalaById(id) {
         console.error('Erro ao executar a consulta:', err);
         return response.status(500).send('Erro no servidor');
       }
-  
+
       const sala = result.rows[0];
 
-      
+
       if (!sala) {
         return response.status(404).send('Sala não encontrado');
       }
       resolve(sala);
-    }) 
+    })
   });
 }
 
@@ -125,15 +125,15 @@ async function getDisciplinaById(id) {
         console.error('Erro ao executar a consulta:', err);
         return response.status(500).send('Erro no servidor');
       }
-  
+
       const disciplina = result.rows[0];
 
-      
+
       if (!disciplina) {
         return response.status(404).send('Disciplina não encontrado');
       }
       resolve(disciplina);
-    }) 
+    })
   });
 }
 
@@ -144,15 +144,15 @@ async function getDisciplinaById(id) {
         console.error('Erro ao executar a consulta:', err);
         return response.status(500).send('Erro no servidor');
       }
-  
+
       const disciplina = result.rows[0];
 
-      
+
       if (!disciplina) {
         return response.status(404).send('disciplina não encontrada');
       }
       resolve(disciplina);
-    }) 
+    })
   });
 }
 
@@ -162,12 +162,12 @@ app.get('/horarios', (request, response) => {
       result.rows.map(async (row) => {
         return new Promise(async (resolve) => {
           resolve({
-            ...row, 
-            professor : await getProfessorById(row.professor_id),
-            sala : await getSalaById(row.sala_id),
-            disciplina : await getDisciplinaById(row.disciplina_id)
+            ...row,
+            professor: await getProfessorById(row.professor_id),
+            sala: await getSalaById(row.sala_id),
+            disciplina: await getDisciplinaById(row.disciplina_id)
           })
-        }) 
+        })
       }),
     )
     return response.status(200).send(horarios);
@@ -201,49 +201,63 @@ app.post('/horario/inserir', (request, response) => {
   }
 
   pool.query(
-    'SELECT * FROM horarios WHERE dia_semana = $1 AND periodo = $2 AND sala_id = $3',
-    [diaSemana, periodo, salaId],
+    'SELECT * FROM horarios WHERE professor_id = $1 AND dia_semana = $2',
+    [professorId, diaSemana],
     (err, result) => {
       if (err) {
         console.error(err);
         return response.status(500).send('Erro no servidor');
       }
-  
+
       if (result.rows.length > 0) {
-        return response.status(200).json({ message: 'A sala já está reservada para este horário' });
+        return response.status(200).json({ massage: 'Professor está indisponível neste dia' });
       }
-  
+
       pool.query(
-        'SELECT capacidade_sala FROM salas WHERE id = $1',
-        [salaId],
+        'SELECT * FROM horarios WHERE dia_semana = $1 AND periodo = $2 AND sala_id = $3',
+        [diaSemana, periodo, salaId],
         (err, result) => {
           if (err) {
             console.error(err);
             return response.status(500).send('Erro no servidor');
           }
-  
-          const capacidadeSala = result.rows[0].capacidade_sala;
-  
-          if (capacidadeSala < quantidadeAlunos) {
-            return response.status(200).json({ message: 'Esta sala não suporta a quantidade de alunos!' });
+
+          if (result.rows.length > 0) {
+            return response.status(200).json({ message: 'A sala já está reservada para este horário' });
           }
-  
+
           pool.query(
-            'INSERT INTO horarios (disciplina_id, professor_id, dia_semana, periodo, sala_id, alunos_quantidade) VALUES ($1, $2, $3, $4, $5, $6)',
-            [nomeHorario, professorId, diaSemana, periodo, salaId, quantidadeAlunos],
+            'SELECT capacidade_sala FROM salas WHERE id = $1',
+            [salaId],
             (err, result) => {
               if (err) {
                 console.error(err);
                 return response.status(500).send('Erro no servidor');
               }
-  
-              response.status(201).send('horario cadastrado com sucesso');
+
+              const capacidadeSala = result.rows[0].capacidade_sala;
+
+              if (capacidadeSala < quantidadeAlunos) {
+                return response.status(200).json({ message: 'Esta sala não suporta a quantidade de alunos!' });
+              }
+
+              pool.query(
+                'INSERT INTO horarios (disciplina_id, professor_id, dia_semana, periodo, sala_id, alunos_quantidade) VALUES ($1, $2, $3, $4, $5, $6)',
+                [nomeHorario, professorId, diaSemana, periodo, salaId, quantidadeAlunos],
+                (err, result) => {
+                  if (err) {
+                    console.error(err);
+                    return response.status(500).send('Erro no servidor');
+                  }
+
+                  response.status(201).send('horario cadastrado com sucesso');
+                }
+              );
             }
           );
         }
-      );
-    }
-  );
+      )
+    })
 });
 
 
@@ -255,32 +269,45 @@ app.put('/horario/alterar/:id', (request, response) => {
   const { nomeHorario, professorId, diaSemana, periodo, salaId } = request.body;
 
   pool.query(
-    'SELECT * FROM horarios WHERE dia_semana = $1 AND periodo = $2 AND sala_id = $3 AND id <> $4',
-    [diaSemana, periodo, salaId, id],
+    'SELECT * FROM horarios WHERE professor_id = $1 AND dia_semana = $2',
+    [professorId, diaSemana],
     (err, result) => {
       if (err) {
         console.error(err);
         return response.status(500).send('Erro no servidor');
       }
-  
+
       if (result.rows.length > 0) {
-        return response.status(400).send('A sala já está reservada para este horário');
+        return response.status(200).json({ massage: 'Professor está indisponível neste dia' });
       }
-  
+
       pool.query(
-        `UPDATE horarios SET disciplina_id='${nomeHorario}', professor_id='${professorId}', dia_semana='${diaSemana}', periodo='${periodo}', sala_id='${salaId}' WHERE id='${id}';`,
+        'SELECT * FROM horarios WHERE dia_semana = $1 AND periodo = $2 AND sala_id = $3 AND id <> $4',
+        [diaSemana, periodo, salaId, id],
         (err, result) => {
           if (err) {
             console.error(err);
-            return response.status(500).send('Ocorreu um erro ao atualizar a horario');
+            return response.status(500).send('Erro no servidor');
           }
-  
-          return response.status(200).send('horario alterado com sucesso');
+
+          if (result.rows.length > 0) {
+            return response.status(400).send('A sala já está reservada para este horário');
+          }
+
+          pool.query(
+            `UPDATE horarios SET disciplina_id  ='${nomeHorario}', professor_id='${professorId}', dia_semana='${diaSemana}', periodo='${periodo}', sala_id='${salaId}' WHERE id='${id}';`,
+            (err, result) => {
+              if (err) {
+                console.error(err);
+                return response.status(500).send('Ocorreu um erro ao atualizar a horario');
+              }
+
+              return response.status(200).send('horario alterado com sucesso');
+            }
+          );
         }
       );
-    }
-  );
-
+    })
 });
 
 app.delete('/horario/deletar/:id', (request, response) => {
@@ -326,15 +353,15 @@ async function getGraduacaoById(id) {
         console.error('Erro ao executar a consulta:', err);
         return response.status(500).send('Erro no servidor');
       }
-  
+
       const graduacao = result.rows[0];
-  
+
       if (!graduacao) {
         return response.status(404).send('graduacao não encontrada');
       }
-  
+
       resolve(graduacao);
-    }) 
+    })
   });
 }
 
@@ -344,10 +371,10 @@ app.get('/disciplinas', (request, response) => {
       result.rows.map(async (row) => {
         return new Promise(async (resolve) => {
           resolve({
-            ...row, 
-            graduacao : await getGraduacaoById(row.graduacao_id)
+            ...row,
+            graduacao: await getGraduacaoById(row.graduacao_id)
           })
-        }) 
+        })
       }),
     )
     return response.status(200).send(disciplina);
