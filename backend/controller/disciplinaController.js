@@ -1,6 +1,23 @@
 const database = require('../js/database');
+const graduacaoController = require('../controller/graduacaoController') 
 
-async function getDisciplinaById(id) {
+function importarDisciplinas(request, response) {
+  database.query(`SELECT * FROM disciplinas`, async (err, result, fields) => {
+    const disciplina = await Promise.all(
+      result.rows.map(async (row) => {
+        return new Promise(async (resolve) => {
+          resolve({
+            ...row,
+            graduacao: await graduacaoController.getGraduacaoById(row.graduacao_id)
+          })
+        })
+      }),
+    )
+    return response.status(200).send(disciplina);
+  });
+};
+
+async function importarDisciplinaById(id) {
     return new Promise((resolve, reject) => {
       database.query('SELECT * FROM disciplinas WHERE id = $1', [id], (err, result) => {
         if (err) {
@@ -19,5 +36,5 @@ async function getDisciplinaById(id) {
   }
 
   module.exports = {
-    getDisciplinaById
+    importarDisciplinaById, importarDisciplinas
   }
