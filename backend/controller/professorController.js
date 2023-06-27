@@ -83,7 +83,7 @@ function deletarProfessor(request, response) {
 
 async function getProfessorById(id) {
   return new Promise((resolve, reject) => {
-    pool.query('SELECT * FROM professores WHERE id = $1', [id], (err, result) => {
+    database.query('SELECT * FROM professores WHERE id = $1', [id], (err, result) => {
       if (err) {
         console.error('Erro ao executar a consulta:', err);
         return response.status(500).send('Erro no servidor');
@@ -101,5 +101,5 @@ async function getProfessorById(id) {
 }
 
 module.exports = {
-  importarProfessores, importarProfessorById, cadastrarProfessor, alterarProfessor, deletarProfessor
+  importarProfessores, importarProfessorById, cadastrarProfessor, alterarProfessor, deletarProfessor, getProfessorById
 }
