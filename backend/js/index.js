@@ -4,8 +4,10 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-const pool = require('./database');
-const professorController = require('../controller/professorController')
+const professorController = require('../controller/professorController');
+const salaController = require('../controller/salaController');
+const disciplinaController = require('../controller/disciplinaController');
+const horarioController = require('../controller/horarioController');
 
 app.get('/', (request, response) => {
   return response.status(200).send('O servidor está em funcionamento');
@@ -25,301 +27,24 @@ app.delete('/professor/deletar/:id', professorController.deletarProfessor);
 
 //horarios
 
-async function getProfessorById(id) {
-  return new Promise((resolve, reject) => {
-    pool.query('SELECT * FROM professores WHERE id = $1', [id], (err, result) => {
-      if (err) {
-        console.error('Erro ao executar a consulta:', err);
-        return response.status(500).send('Erro no servidor');
-      }
+app.get('/horarios', horarioController.importarHorarios);
 
-      const professor = result.rows[0];
+app.get('/horario/:id', horarioController.importarHorarioById);
 
-      if (!professor) {
-        return response.status(404).send('Professor não encontrado');
-      }
-      
-      resolve(professor);
-    })
-  });
-}
-
-async function getSalaById(id) {
-  return new Promise((resolve, reject) => {
-    pool.query('SELECT * FROM salas WHERE id = $1', [id], (err, result) => {
-      if (err) {
-        console.error('Erro ao executar a consulta:', err);
-        return response.status(500).send('Erro no servidor');
-      }
-
-      const sala = result.rows[0];
+app.post('/horario/inserir', horarioController.inserirHorario);
 
 
-      if (!sala) {
-        return response.status(404).send('Sala não encontrado');
-      }
-      resolve(sala);
-    })
-  });
-}
+app.put('/horario/alterar/:id', horarioController.alterarHorario);
 
-async function getDisciplinaById(id) {
-  return new Promise((resolve, reject) => {
-    pool.query('SELECT * FROM disciplinas WHERE id = $1', [id], (err, result) => {
-      if (err) {
-        console.error('Erro ao executar a consulta:', err);
-        return response.status(500).send('Erro no servidor');
-      }
-
-      const disciplina = result.rows[0];
-
-
-      if (!disciplina) {
-        return response.status(404).send('Disciplina não encontrado');
-      }
-      resolve(disciplina);
-    })
-  });
-}
-
-async function getDisciplinaById(id) {
-  return new Promise((resolve, reject) => {
-    pool.query('SELECT * FROM disciplinas WHERE id = $1', [id], (err, result) => {
-      if (err) {
-        console.error('Erro ao executar a consulta:', err);
-        return response.status(500).send('Erro no servidor');
-      }
-
-      const disciplina = result.rows[0];
-
-
-      if (!disciplina) {
-        return response.status(404).send('disciplina não encontrada');
-      }
-      resolve(disciplina);
-    })
-  });
-}
-
-app.get('/horarios', (request, response) => {
-  pool.query(`SELECT * FROM horarios`, async (err, result, fields) => {
-    const horarios = await Promise.all(
-      result.rows.map(async (row) => {
-        return new Promise(async (resolve) => {
-          resolve({
-            ...row,
-            professor: await getProfessorById(row.professor_id),
-            sala: await getSalaById(row.sala_id),
-            disciplina: await getDisciplinaById(row.disciplina_id)
-          })
-        })
-      }),
-    )
-    return response.status(200).send(horarios);
-  });
-});
-
-app.get('/horario/:id', (request, response) => {
-  const id = request.params.id;
-
-  pool.query('SELECT * FROM horarios WHERE id = $1', [id], (err, result) => {
-    if (err) {
-      console.error('Erro ao executar a consulta:', err);
-      return response.status(500).send('Erro no servidor');
-    }
-
-    const horario = result.rows[0];
-
-    if (!horario) {
-      return response.status(404).send('horario não encontrada');
-    }
-
-    return response.status(200).send(horario);
-  });
-});
-
-app.post('/horario/inserir', (request, response) => {
-  const { nomeHorario, professorId, diaSemana, periodo, salaId, quantidadeAlunos } = request.body;
-
-  if (!nomeHorario || !professorId || !diaSemana || !periodo || !salaId || !quantidadeAlunos) {
-    return response.status(400).send('Campos obrigatórios não foram fornecidos');
-  }
-
-  pool.query(
-    'SELECT * FROM horarios WHERE professor_id = $1 AND dia_semana = $2',
-    [professorId, diaSemana],
-    (err, result) => {
-      if (err) {
-        console.error(err);
-        return response.status(500).send('Erro no servidor');
-      }
-
-      if (result.rows.length > 0) {
-        return response.status(200).json({ massage: 'Professor está indisponível neste dia' });
-      }
-
-      pool.query(
-        'SELECT * FROM horarios WHERE dia_semana = $1 AND periodo = $2 AND sala_id = $3',
-        [diaSemana, periodo, salaId],
-        (err, result) => {
-          if (err) {
-            console.error(err);
-            return response.status(500).send('Erro no servidor');
-          }
-
-          if (result.rows.length > 0) {
-            return response.status(200).json({ message: 'A sala já está reservada para este horário' });
-          }
-
-          pool.query(
-            'SELECT capacidade_sala FROM salas WHERE id = $1',
-            [salaId],
-            (err, result) => {
-              if (err) {
-                console.error(err);
-                return response.status(500).send('Erro no servidor');
-              }
-
-              const capacidadeSala = result.rows[0].capacidade_sala;
-
-              if (capacidadeSala < quantidadeAlunos) {
-                return response.status(200).json({ message: 'Esta sala não suporta a quantidade de alunos!' });
-              }
-
-              pool.query(
-                'INSERT INTO horarios (disciplina_id, professor_id, dia_semana, periodo, sala_id, alunos_quantidade) VALUES ($1, $2, $3, $4, $5, $6)',
-                [nomeHorario, professorId, diaSemana, periodo, salaId, quantidadeAlunos],
-                (err, result) => {
-                  if (err) {
-                    console.error(err);
-                    return response.status(500).send('Erro no servidor');
-                  }
-
-                  response.status(201).send('horario cadastrado com sucesso');
-                }
-              );
-            }
-          );
-        }
-      )
-    })
-});
-
-
-app.put('/horario/alterar/:id', (request, response) => {
-  const id = request.params.id;
-  if (!id) {
-    return response.status(400).send('Dados inválidos!');
-  }
-  const { nomeHorario, professorId, diaSemana, periodo, salaId } = request.body;
-
-  pool.query(
-    'SELECT * FROM horarios WHERE professor_id = $1 AND dia_semana = $2',
-    [professorId, diaSemana],
-    (err, result) => {
-      if (err) {
-        console.error(err);
-        return response.status(500).send('Erro no servidor');
-      }
-
-      if (result.rows.length > 0) {
-        return response.status(200).json({ massage: 'Professor está indisponível neste dia' });
-      }
-
-      pool.query(
-        'SELECT * FROM horarios WHERE dia_semana = $1 AND periodo = $2 AND sala_id = $3 AND id <> $4',
-        [diaSemana, periodo, salaId, id],
-        (err, result) => {
-          if (err) {
-            console.error(err);
-            return response.status(500).send('Erro no servidor');
-          }
-
-          if (result.rows.length > 0) {
-            return response.status(400).send('A sala já está reservada para este horário');
-          }
-
-          pool.query(
-            `UPDATE horarios SET disciplina_id  ='${nomeHorario}', professor_id='${professorId}', dia_semana='${diaSemana}', periodo='${periodo}', sala_id='${salaId}' WHERE id='${id}';`,
-            (err, result) => {
-              if (err) {
-                console.error(err);
-                return response.status(500).send('Ocorreu um erro ao atualizar a horario');
-              }
-
-              return response.status(200).send('horario alterado com sucesso');
-            }
-          );
-        }
-      );
-    })
-});
-
-app.delete('/horario/deletar/:id', (request, response) => {
-  const id = request.params.id;
-  if (!id) {
-    return response.status(400).send('Dados invalidos!');
-  }
-  pool.query(`DELETE FROM horarios WHERE id = ${id}`, (err, result) => {
-    if (err) {
-      console.error('Erro ao executar a consulta:', err);
-      return response.status(500).send('Erro no servidor');
-    }
-
-    return response.status(200).send("horario deletada com sucesso");
-  });
-});
+app.delete('/horario/deletar/:id', horarioController.deletarHorario);
 
 //salas
 
-app.get('/salas', (request, response) => {
-  pool.query(`SELECT * FROM salas`, (err, rows, fields) => {
-    if (err) {
-
-      console.error(err);
-      return response.status(500).send('Erro ao obter os dados das salas');
-    }
-    
-    return response.status(200).json(rows);
-  });
-});
+app.get('/salas', salaController.importarSalas);
 
 //disciplinas
 
-async function getGraduacaoById(id) {
-  return new Promise((resolve, reject) => {
-    pool.query('SELECT * FROM graduacao WHERE id = $1', [id], (err, result) => {
-      if (err) {
-        console.error('Erro ao executar a consulta:', err);
-        return response.status(500).send('Erro no servidor');
-      }
-      
-      const graduacao = result.rows[0];
-      
-      if (!graduacao) {
-        return response.status(404).send('graduacao não encontrada');
-      }
-      
-      resolve(graduacao);
-    })
-  });
-}
-
-app.get('/disciplinas', (request, response) => {
-  pool.query(`SELECT * FROM disciplinas`, async (err, result, fields) => {
-    const disciplina = await Promise.all(
-      result.rows.map(async (row) => {
-        return new Promise(async (resolve) => {
-          resolve({
-            ...row,
-            graduacao: await getGraduacaoById(row.graduacao_id)
-          })
-        })
-      }),
-    )
-    return response.status(200).send(disciplina);
-  });
-});
+app.get('/disciplinas', disciplinaController.importarDisciplinas);
 
 const PORT = 3002;
 app.listen(PORT, () => {
