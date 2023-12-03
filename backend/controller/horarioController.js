@@ -2,6 +2,7 @@ const database = require('../js/database')
 const disciplinaController = require('../controller/disciplinaController');
 const professorController = require('../controller/professorController');
 const salaController = require('../controller/salaController');
+const graduacaoController = require('../controller/graduacaoController');
 
 function importarHorarios(request, response){
     database.query(`SELECT * FROM horarios`, async (err, result, fields) => {
@@ -12,7 +13,7 @@ function importarHorarios(request, response){
                 ...row,
                 professor: await professorController.getProfessorById(row.professor_id),
                 sala: await salaController.getSalaById(row.sala_id),
-                disciplina: await disciplinaController.getDisciplinaById(row.disciplina_id)
+                disciplina: await disciplinaController.importarDisciplinaById(row.disciplina_id)
               })
             })
           }),
