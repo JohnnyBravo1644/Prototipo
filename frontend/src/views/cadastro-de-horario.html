@@ -14,7 +14,7 @@
     <title>Adicionar-Horario</title>
 </head>
 
-<body>
+<body id="main">
     
     <header class="cabecalho">
         
@@ -28,8 +28,10 @@
                 <li><a title="Ferramentas" href="professores.html" onclick="closeNav()">Lista de Professores</a></li>
                 <li><a title="Projetos" href="disciplinas.html" onclick="closeNav()">Lista de Disciplinas</a></li>
             </ul>
+
         </div>
-        
+
+
     </header>
     
     <main>
@@ -92,12 +94,14 @@
                 </div>
                 
                 <div class="formulario__botao">
-                    <button onclick="inserirHorario()" class="btn btn-outline-success">Finalizar Cadastro</button>
+                    <button type="button" onclick="inserirHorario()" class="btn btn-outline-success"  data-bs-toggle="modal" data-bs-target="#dynamicModal">Finalizar Cadastro</button>
                 </div>
                 
             </form>
             
         </section>
+
+        <div id="hidden-modal"></div>
         
     </main>
     

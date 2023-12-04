@@ -1,0 +1,12 @@
+.login {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+}
+
+.login__imagem {
+    width: 350px;
+
+    padding: 5em 0em;
+}

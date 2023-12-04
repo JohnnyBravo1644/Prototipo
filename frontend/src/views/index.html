@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <link rel="stylesheet" href="../css/login.css">
     <link rel="stylesheet" href="../css/formularios.css">
     <link rel="stylesheet" href="../css/cabecalho.css">
     <link rel="stylesheet" href="../css/rodape.css">
@@ -18,22 +19,34 @@
 <body>
 
     <header class="cabecalho">
-
-        <span onclick="openNav()" class="cabecalho__hamburguer"><p><img class="cabecalho__Icone-hamburguer" src="../img/hamburger-md-svgrepo-com.svg" alt="Icone de hamburguer" width="50em"></p></span>
-        <img class="cabecalho__imagem" src="../img/Logo-Unibave.png" alt="logo-unibave" width="130px">
-
-        <div id="mySidenav" class="sidenav">
-            <ul class="cabecalho__lista">
-                <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-                <li><a title="Ferramentas" href="Professores.html" onclick="closeNav()">Lista de Professores</a></li>
-                <li><a title="Formacao" href="cadastrar-disciplina.html" onclick="closeNav()">Cadastrar uma Disciplina</a></li>
-                <li><a title="Projetos" href="discplinas.html" onclick="closeNav()">Lista de Disciplinas</a></li>
-            </ul>
-        </div>
-
     </header>
 
     <main>
+
+        <div class="login">
+            <img class="login__imagem" src="../img/Logo-Unibave.png" alt="logo do centro universitario barriga verde">
+        </div>
+
+        <div class="mb-3">
+            <label class="formulario__label form-label">email</label>
+            <input class="formulario__input form-control" type="text" class="form_control" id="email">
+        </div>
+
+        <div class="mb-3">
+            <label class="formulario__label form-label">Senha</label>
+            <input class="formulario__input form-control" type="text" class="form_control" id="senha">
+        </div>
+
+        <div class="formulario__botao">
+            <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#dynamicModal">Acessar</button>
+
+            <button type="button" class="btn btn-success">Esqueci minha senha</button>
+
+            <button type="button" class="btn btn-success">Criar cadastro</button>
+        </div>
+
+        <div id="hidden-modal"></div>
+
         
     </main>
     
