@@ -37,12 +37,12 @@ function esconderIconeCarregando() {
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="dynamicModalLabel">Alerta!</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="recarregarPagina()"></button>
                 </div>
                 <div class="modal-body">
                     <p  id="mensagem-modal">Ação Realizada</p>
                 </div>
                 <div class="modal-footer">
+                    <button onclick="recarregarPagina()" type="button" class="btn btn-outline-success" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
