@@ -26,7 +26,7 @@ const alterarProfessor = (id) => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({nomeProfessor: nome, formacaoProfessor: formacao, emailProfessor: email})
-    }).then(async(resposta) => {
+    }).then(async (resposta) => {
         const data = await resposta.json();
         const elemento = document.getElementById('mensagem-modal');
         elemento.textContent = data.message;

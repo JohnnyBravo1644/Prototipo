@@ -21,8 +21,8 @@ const carregarHorario = () => {
                 ${horario.sala.bloco_sala} - ${horario.sala.numero_sala}</th>
                 <th class="col-sm-9"><input class="formulario-alterar" type="text" id="disciplina-dia-semana-${horario.id}" value="${horario.dia_semana}"></th>
                 <th class="col-sm-9"><input class="formulario-alterar" type="text" id="disciplina-periodo-${horario.id}" value="${horario.periodo}"></th>
-                <th class="col-sm-9"><button onclick="excluirProfessor(${horario.id})" class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#dynamicModal">Deletar</button></th>
-                <th class="col-sm-9"><button onclick="alterarProfessor(${horario.id})" class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#dynamicModal">Atualizar</button></th>
+                <th class="col-sm-9"><button onclick="excluirHorario(${horario.id})" class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#dynamicModal">Deletar</button></th>
+                <th class="col-sm-9"><button onclick="alterarHorario(${horario.id})" class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#dynamicModal">Atualizar</button></th>
                 
                 </tr>
                 `;

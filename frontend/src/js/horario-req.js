@@ -32,6 +32,7 @@ const excluirHorario = (id) => {
     const data = await resposta.json();
     const elemento = document.getElementById('mensagem-modal');
     elemento.textContent = data.message;
+    carregarProfesores();
   })
 };
 
