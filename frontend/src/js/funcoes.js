@@ -25,3 +25,26 @@ function esconderIconeCarregando() {
     document.getElementById('formacao').value = '';
     document.getElementById('email').email = '';
   }
+
+  function recarregarPagina() {
+    // Recarrega a página
+    location.reload();
+}
+
+  document.getElementById('hidden-modal').innerHTML = `
+    <div class="modal fade" id="dynamicModal" tabindex="-1" aria-labelledby="dynamicModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="dynamicModalLabel">Alerta!</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="recarregarPagina()"></button>
+                </div>
+                <div class="modal-body">
+                    <p  id="mensagem-modal">Ação Realizada</p>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+`;
