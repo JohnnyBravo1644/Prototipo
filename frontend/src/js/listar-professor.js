@@ -17,8 +17,8 @@ const carregarProfesores = () => {
                 <th "col-sm-3""><input class="formulario-alterar" type="text" id="professor-nome-${professor.id}"  value="${professor.nome}"></th>
                 <th "col-sm-3"><input class="formulario-alterar" type="text" id="professor-formacao-${professor.id}"  value="${professor.formacao}"></th>
                 <th class="col-sm-9"><input class="formulario-alterar" type="text" id="professor-email-${professor.id}"  value="${professor.email}"></th>
-                <th class="col-sm-9"><button onclick="excluirProfessor(${professor.id})" class="btn btn-success">Deletar</button></th>
-                <th class="col-sm-9"><button onclick="alterarProfessor(${professor.id})" class="btn btn-success">Atualizar</button></th>
+                <th class="col-sm-9"><button onclick="excluirProfessor(${professor.id})" class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#dynamicModal">Deletar</button></th>
+                <th class="col-sm-9"><button onclick="alterarProfessor(${professor.id})" class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#dynamicModal">Atualizar</button></th>
             </tr>
                 `;
             }, '');
