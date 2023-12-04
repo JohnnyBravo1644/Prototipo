@@ -18,7 +18,9 @@ const inserirHorario = (disciplina = {}) => {
     body: JSON.stringify({ nomeHorario: nomeHorario, professorId: professorId, diaSemana: diaSemana, periodo: periodo, salaId: salaId, quantidadeAlunos: quantidadeAlunos })
 
   }).then(async (resposta) => {
-    mostrarMensagem(await resposta.json());
+    const data = await resposta.json();
+    const elemento = document.getElementById('mensagem-modal');
+    elemento.textContent = data.message;
     limparCampos();
   })
 };
@@ -27,7 +29,9 @@ const excluirHorario = (id) => {
   fetch(`http://localhost:3002/horario/deletar/${id}`, {
     method: 'DELETE',
   }).then(async (resposta) => {
-    mostrarMensagem(await resposta.json('Disciplina deletada com sucesso'));
+    const data = await resposta.json();
+    const elemento = document.getElementById('mensagem-modal');
+    elemento.textContent = data.message;
   })
 };
 

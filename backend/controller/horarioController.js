@@ -54,11 +54,11 @@ function inserirHorario(request, response) {
     (err, result) => {
       if (err) {
         console.error(err);
-        return response.status(500).send('Erro no servidor');
+        response.status(300).json({ message: 'Erro no servidor'});
       }
 
       if (result.rows.length > 0) {
-        return response.status(200).json({ massage: 'Professor está indisponível neste dia' });
+        response.status(200).json({ massage: 'Professor está indisponível neste dia' });
       }
 
       database.query(
@@ -98,7 +98,7 @@ function inserirHorario(request, response) {
                     return response.status(500).send('Erro no servidor');
                   }
 
-                  response.status(201).send('horario cadastrado com sucesso');
+                  response.status(201).json({ message: 'horario cadastrado com sucesso'});
                 }
               );
             }
@@ -149,7 +149,7 @@ function alterarHorario(request, response) {
                 return response.status(500).send('Ocorreu um erro ao atualizar a horario');
               }
 
-              return response.status(200).send('horario alterado com sucesso');
+              response.status(201).json({ message: 'horario alterado com sucesso'});
             }
           );
         }
@@ -168,7 +168,7 @@ function deletarHorario(request, response) {
       return response.status(500).send('Erro no servidor');
     }
 
-    return response.status(200).send("horario deletada com sucesso");
+    response.status(201).json({ message: 'horario deletada com sucesso'});
   });
 };
 

@@ -45,7 +45,7 @@ function cadastrarProfessor(request, response) {
       return response.status(500).send('Erro no servidor');
     }
 
-    response.status(201).send('Professor cadastrado com sucesso');
+    response.status(201).json({ message: 'Professor cadastrado com sucesso' });
   });
 };
 
@@ -62,7 +62,7 @@ function alterarProfessor(request, response) {
       return response.status(500).send("Ocorreu um erro ao atualizar o professor");
     }
 
-    return response.status(200).send("Professor alterado com sucesso");
+    response.status(201).json({ message: 'Professor alterado com sucesso'});
   });
 };
 
@@ -76,8 +76,7 @@ function deletarProfessor(request, response) {
       console.error('Erro ao executar a consulta:', err);
       return response.status(500).send('Erro no servidor');
     }
-
-    return response.status(200).send("professor deletado com sucesso");
+    response.status(201).json({ message: 'professor deletado com sucesso'});
   });
 };
 
@@ -89,7 +88,7 @@ async function getProfessorById(id) {
         return response.status(500).send('Erro no servidor');
       }
 
-      const professor = result.rows[0];
+      const professor = result.rows;
 
       if (!professor) {
         return response.status(404).send('Professor não encontrado');

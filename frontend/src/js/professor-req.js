@@ -9,13 +9,12 @@ const inserirProfessor = (professor = {}) => {
             },
         body: JSON.stringify({nomeProfessor: nome, formacaoProfessor: formacao, emailProfessor: email})
     }).then(async (resposta) => {
-        mostrarMensagem(await resposta.json());
-        console.log('professor', professor);
-        limparCampos()
+        const data = await resposta.json();
+        const elemento = document.getElementById('mensagem-modal');
+        elemento.textContent = data.message;
+        limparCampos();
     })
 };
-
-
 
 const alterarProfessor = (id) => {
     const nome = document.getElementById(`professor-nome-${id}`).value;
@@ -28,7 +27,9 @@ const alterarProfessor = (id) => {
         },
         body: JSON.stringify({nomeProfessor: nome, formacaoProfessor: formacao, emailProfessor: email})
     }).then(async(resposta) => {
-        mostrarMensagem(await resposta.json());
+        const data = await resposta.json();
+        const elemento = document.getElementById('mensagem-modal');
+        elemento.textContent = data.message;
         carregarProfesores();
     })
 }
@@ -37,7 +38,9 @@ const excluirProfessor = (id) => {
     fetch (`http://localhost:3002/professor/deletar/${id}`,{
         method: 'DELETE',
     }).then(async (resposta) => {
-        mostrarMensagem(await resposta.json());
+        const data = await resposta.json();
+        const elemento = document.getElementById('mensagem-modal');
+        elemento.textContent = data.message;
         carregarProfesores();
     })
 };
